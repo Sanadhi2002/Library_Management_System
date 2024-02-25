@@ -20,4 +20,13 @@ public class MemberService {
     public List<Member> getAllMembers(){
         return mRepo.findAll();
     }
+    public Member getMemberById(int id){
+
+        return mRepo.findById(id).get();
+    }
+    public void deleteById(int id){
+        mRepo.deleteById(id);
+    }
+
+
 }

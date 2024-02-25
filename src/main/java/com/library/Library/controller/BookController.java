@@ -98,10 +98,16 @@ public class BookController {
     }
 
     @RequestMapping("/deleteBook/{id}")
-    public String editBook(@PathVariable("id") int id){
+    public String deleteBook(@PathVariable("id") int id){
 
         service.deleteById(id);
         return "redirect:/available_books";
+    }
+
+    @RequestMapping("/deleteMember/{id}")
+    public String deleteMember(@PathVariable("id")int id){
+        memberService.deleteById(id);
+        return "redirect:/new_member";
     }
 
 
