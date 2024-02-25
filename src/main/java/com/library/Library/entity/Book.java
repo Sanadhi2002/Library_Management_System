@@ -16,15 +16,17 @@ public class Book {
 
 
 
+    private int count;
     private  String author;
     private  String price;
 
-    public Book(int id, String name, String author, String price) {
+    public Book(int id, String name, String author, String price, int count) {
         super();
         this.id = id;
         this.name = name;
         this.author = author;
         this.price = price;
+        this.count=count;
     }
 
     public Book(){
@@ -63,5 +65,11 @@ public class Book {
         this.price = price;
     }
 
+    public int getCount() {
+        return count;
+    }
 
+    public void setCount(int count) {
+        this.count = count;
+    }
 }
