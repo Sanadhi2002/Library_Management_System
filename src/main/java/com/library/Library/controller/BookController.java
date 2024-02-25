@@ -1,10 +1,12 @@
-package com.bookStop.BookShop.controller;
+package com.library.Library.controller;
 
 
-import com.bookStop.BookShop.entity.Book;
-import com.bookStop.BookShop.entity.MyBookList;
-import com.bookStop.BookShop.service.BookService;
-import com.bookStop.BookShop.service.MyBookListService;
+import com.library.Library.entity.Book;
+import com.library.Library.entity.Member;
+import com.library.Library.entity.MyBookList;
+import com.library.Library.service.BookService;
+import com.library.Library.service.MemberService;
+import com.library.Library.service.MyBookListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,15 +19,26 @@ import java.util.List;
 public class BookController {
 
     @Autowired
-    private BookService  service;
+    private BookService service;
 
     @Autowired
     private MyBookListService myBookService;
+
+    @Autowired
+    private MemberService memberService;
 
     @GetMapping("/")
     public String home(){
         return "home";
     }
+
+
+
+    @GetMapping("/new_member")
+    public String memberRegister(){
+        return "memberRegister";
+    }
+
 
 
     @GetMapping("/book_register")
@@ -48,6 +61,12 @@ public class BookController {
     public String addBook(@ModelAttribute Book b){
         service.save(b);
         return "redirect:/available_books";
+    }
+
+    @PostMapping("/saveMember")
+    public  String addMember(@ModelAttribute Member member){
+        memberService.saveMember(member);
+        return  "redirect:/new_member";
     }
 
     @GetMapping("/my_books")

@@ -1,6 +1,6 @@
-package com.bookStop.BookShop.repository;
+package com.library.Library.repository;
 
-import com.bookStop.BookShop.entity.MyBookList;
+import com.library.Library.entity.MyBookList;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

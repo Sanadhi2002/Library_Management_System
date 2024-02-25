@@ -1,7 +1,7 @@
-package com.bookStop.BookShop.service;
+package com.library.Library.service;
 
-import com.bookStop.BookShop.entity.MyBookList;
-import com.bookStop.BookShop.repository.MyBookRepository;
+import com.library.Library.entity.MyBookList;
+import com.library.Library.repository.MyBookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

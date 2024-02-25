@@ -1,4 +1,4 @@
-package com.bookStop.BookShop;
+package com.library.Library;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

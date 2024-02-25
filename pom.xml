@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.bookStop</groupId>
-	<artifactId>BookShop</artifactId>
+	<artifactId>Library</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>BookShop</name>
 	<description>Bookshop Application</description>

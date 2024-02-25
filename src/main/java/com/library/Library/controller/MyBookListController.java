@@ -1,6 +1,6 @@
-package com.bookStop.BookShop.controller;
+package com.library.Library.controller;
 
-import com.bookStop.BookShop.service.MyBookListService;
+import com.library.Library.service.MyBookListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;

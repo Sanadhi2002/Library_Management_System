@@ -1,4 +1,4 @@
-package com.bookStop.BookShop.entity;
+package com.library.Library.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

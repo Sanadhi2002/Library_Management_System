@@ -1,7 +1,7 @@
-package com.bookStop.BookShop.repository;
+package com.library.Library.repository;
 
 
-import com.bookStop.BookShop.entity.Book;
+import com.library.Library.entity.Book;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
