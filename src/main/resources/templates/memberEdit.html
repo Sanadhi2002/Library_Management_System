@@ -32,7 +32,7 @@
         </li>
 
         <li class="nav-item">
-          <a class="nav-link active " aria-current="page" href="book_register">Register a book</a>
+          <a class="nav-link active" aria-current="page" href="book_register">Register a book</a>
         </li>
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="new_member">Add NEW MEMBER</a>
@@ -40,44 +40,44 @@
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href=" members">Members</a>
         </li>
-
-
       </ul>
 
     </div>
   </div>
 </nav>
 <div class="container">
-  <table class="table table-striped  table-hover">
-    <thead>
-    <tr>
-      <th scope="col">Id</th>
-      <th scope="col">First Name</th>
-      <th scope="col">Last Name</th>
-      <th scope="col">Email</th>
-      <th scope="col">Phone Number</th>
-      <th scope="col">Date of Birth</th>
-      <th scope="col">Action</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="m:${member} ">
 
-      <td th:text="${m.id}"></td>
-      <td th:text="${m.firstName}"></td>
-      <td th:text="${m.lastName}"></td>
-      <td th:text="${m.email}"></td>
-      <td th:text="${m.dateOfBirth}"></td>
-      <td th:text="${m.phone}"></td>
-      <td>
+  <form class="col-md-4 offset-md-4" th:action="@{/saveMember}" method="post" th:object="${member}">
 
-        <a th:href="@{/deleteMember/{id} (id=${m.id} ) }">Delete</a>
-      <a th:href="@{/editMember/{id} (id=${m.id} ) }">Edit</a>
+    <input type="hidden" name="id" th:value="${member.id}"/>
+    <div class="mb-3">
+      <label for="firstname" class="form-label">First Name</label>
+      <input type="text" class="form-control" id="firstname" name="firstName" th:value="${member.firstName}">
+    </div>
 
-      </td>
-    </tr>
-    </tbody>
-  </table>
+    <div class="mb-3">
+      <label for="lastName" class="form-label">Last Name</label>
+      <input type="text" class="form-control" id="lastName" name="lastName" th:value="${member.lastName}">
+    </div>
+
+    <div class="mb-3">
+      <label for="email" class="form-label">Email</label>
+      <input type="email" class="form-control" id="email" name="email" th:value="${member.email}">
+    </div>
+
+    <div class="mb-3">
+      <label for="phone" class="form-label">Phone</label>
+      <input type="text" class="form-control" id="phone" name="phone" th:value="${member.phone}">
+    </div>
+
+    <div class="mb-3">
+      <label for="dateOfBirth" class="form-label">Date of Birth</label>
+      <input type="text" class="form-control" id="dateOfBirth" name="dateOfBirth" th:value="${member.dateOfBirth}">
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>

@@ -97,6 +97,15 @@ public class BookController {
         return "bookEdit";
     }
 
+    @RequestMapping("/editMember/{id}")
+    public String editMember(@PathVariable("id") int id, Model model){
+        Member m=memberService.getMemberById(id);
+
+        model.addAttribute("member",m);
+        return "memberEdit";
+    }
+
+
     @RequestMapping("/deleteBook/{id}")
     public String deleteBook(@PathVariable("id") int id){
 
