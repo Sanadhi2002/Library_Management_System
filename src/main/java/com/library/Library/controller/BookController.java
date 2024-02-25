@@ -55,6 +55,12 @@ public class BookController {
         return new ModelAndView("bookList","book",list);
     }
 
+    @GetMapping("/members")
+    public ModelAndView getAllMembers(){
+        List<Member> memberList=memberService.getAllMembers();
+        return  new ModelAndView("memberList","member",memberList);
+    }
+
 
 
     @PostMapping("/save")

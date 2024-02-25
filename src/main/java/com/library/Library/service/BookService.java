@@ -18,6 +18,7 @@ public class BookService {
     }
 
     public List<Book> getAllBook(){
+
         return bRepo.findAll();
     }
 
