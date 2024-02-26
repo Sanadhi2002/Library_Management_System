@@ -2,6 +2,8 @@ package com.library.Library.entity;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 public class Member {
 
@@ -19,7 +21,12 @@ public class Member {
 
     private String phone;
 
-    public Member(int id, String firstName, String lastName, String dateOfBirth, String email, String phone) {
+    @OneToMany(mappedBy = "member")
+    private List<BorrowedBook> borrowedBooks;
+
+
+
+    public Member(int id, String firstName, String lastName, String dateOfBirth, String email, String phone,List<BorrowedBook> borrowedBooks) {
         super();
         this.id = id;
         this.firstName = firstName;
@@ -27,6 +34,7 @@ public class Member {
         this.dateOfBirth = dateOfBirth;
         this.email = email;
         this.phone = phone;
+        this.borrowedBooks = borrowedBooks;
     }
 
     public Member(){
@@ -79,5 +87,13 @@ public class Member {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public List<BorrowedBook> getBorrowedBooks() {
+        return borrowedBooks;
+    }
+
+    public void setBorrowedBooks(List<BorrowedBook> borrowedBooks) {
+        this.borrowedBooks = borrowedBooks;
     }
 }

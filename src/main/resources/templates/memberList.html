@@ -57,6 +57,7 @@
       <th scope="col">Email</th>
       <th scope="col">Phone Number</th>
       <th scope="col">Date of Birth</th>
+      <th scope="col">Borrowed books</th>
       <th scope="col">Action</th>
     </tr>
     </thead>
@@ -69,10 +70,15 @@
       <td th:text="${m.email}"></td>
       <td th:text="${m.dateOfBirth}"></td>
       <td th:text="${m.phone}"></td>
-      <td>
 
+      <td>
+          <span th:each="borrowedBook : ${m.borrowedBooks}">
+                    <span th:text="${borrowedBook.book.id}"></span>,
+        </span>
+      </td>
+      <td>
         <a th:href="@{/deleteMember/{id} (id=${m.id} ) }">Delete</a>
-      <a th:href="@{/editMember/{id} (id=${m.id} ) }">Edit</a>
+        <a th:href="@{/editMember/{id} (id=${m.id} ) }">Edit</a>
 
       </td>
     </tr>

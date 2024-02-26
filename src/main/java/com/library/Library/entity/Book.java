@@ -1,10 +1,9 @@
 package com.library.Library.entity;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 public class Book {
@@ -20,13 +19,19 @@ public class Book {
     private  String author;
     private  String price;
 
-    public Book(int id, String name, String author, String price, int count) {
+    @OneToMany(mappedBy = "book")
+    private List<BorrowedBook> borrowedByMembers;
+
+
+
+    public Book(int id, String name, String author, String price, int count,List<BorrowedBook> borrowedByMembers) {
         super();
         this.id = id;
         this.name = name;
         this.author = author;
         this.price = price;
         this.count=count;
+        this.borrowedByMembers = borrowedByMembers;
     }
 
     public Book(){
@@ -71,5 +76,13 @@ public class Book {
 
     public void setCount(int count) {
         this.count = count;
+    }
+
+    public List<BorrowedBook> getBorrowedByMembers() {
+        return borrowedByMembers;
+    }
+
+    public void setBorrowedByMembers(List<BorrowedBook> borrowedByMembers) {
+        this.borrowedByMembers = borrowedByMembers;
     }
 }
