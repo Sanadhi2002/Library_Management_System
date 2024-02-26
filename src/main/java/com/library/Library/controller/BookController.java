@@ -68,6 +68,14 @@ public class BookController {
         return "memberList";
     }
 
+    @PostMapping("available_books/search")
+    public String searchBooks(@RequestParam String keyword, Model model){
+        List<Book> searchResults = service.searchBooks(keyword);
+        model.addAttribute("book", searchResults);
+        return "bookList";
+    }
+
+
 
     @PostMapping("/save")
     public String addBook(@ModelAttribute Book b){

@@ -1,6 +1,7 @@
 package com.library.Library.service;
 
 import com.library.Library.entity.Book;
+import com.library.Library.entity.Member;
 import com.library.Library.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,4 +31,7 @@ public class BookService {
         bRepo.deleteById(id);
     }
 
+    public List<Book> searchBooks(String keyword){
+        return bRepo.findByNameContainingOrAuthorContaining(keyword, keyword);
+    }
 }
