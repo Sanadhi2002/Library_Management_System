@@ -28,5 +28,8 @@ public class MemberService {
         mRepo.deleteById(id);
     }
 
+    public List<Member> searchMembers(String keyword){
+        return mRepo.findByFirstNameContainingOrLastNameContaining(keyword, keyword);
+    }
 
 }
