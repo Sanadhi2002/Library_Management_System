@@ -88,6 +88,13 @@ public class BookController {
         return new ModelAndView("bookList","book",list);
     }
 
+    @GetMapping("/books")
+    public ModelAndView getBooks(){
+        List<Book> list=service.getAllBook();
+        return new ModelAndView("gallery","book",list);
+
+    }
+
     @GetMapping("/members")
     public ModelAndView getAllMembers(){
         List<Member> memberList=memberService.getAllMembers();
@@ -107,6 +114,8 @@ public class BookController {
         model.addAttribute("book", searchResults);
         return "bookList";
     }
+
+
 
 
 
