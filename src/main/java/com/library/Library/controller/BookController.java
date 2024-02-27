@@ -4,10 +4,13 @@ package com.library.Library.controller;
 import com.library.Library.entity.Book;
 import com.library.Library.entity.Member;
 import com.library.Library.entity.MyBookList;
+import com.library.Library.entity.User;
+import com.library.Library.repository.UserRepository;
 import com.library.Library.service.BookService;
 import com.library.Library.service.MemberService;
 import com.library.Library.service.MyBookListService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -27,10 +30,40 @@ public class BookController {
     @Autowired
     private MemberService memberService;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @GetMapping("/")
     public String home(){
         return "home";
     }
+
+    @GetMapping("/register")
+    public String register(Model model){
+        model.addAttribute("user", new User());
+        return "register";
+    }
+
+    @PostMapping("/process_register")
+    public  String processRegister(User user){
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encodedPassword);
+
+        userRepository.save(user);
+        return "register_success";
+    }
+    @GetMapping("/login")
+    public String login(){
+        return "login";
+    }
+    @GetMapping("/users")
+    public String listUsers(Model model) {
+        List<User> listUsers = userRepository.findAll();
+        model.addAttribute("listUsers", listUsers);
+        return "users";
+    }
+
 
 
 
