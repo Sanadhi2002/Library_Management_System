@@ -22,13 +22,22 @@ public class User {
     @Column(name = "last_name", nullable = false, length = 20)
     private String last_name;
 
-    public User(Long id, String email, String password, String first_name, String last_name) {
+    @Column(name = "phone", nullable = false, length = 10)
+    private String phone;
+
+    @ManyToOne
+    @JoinColumn(name = "role_id",  referencedColumnName = "id")
+    private Role role;
+
+
+    public User(Long id, String email, String password, String first_name, String last_name, String phone) {
         super();
         this.id = id;
         this.email = email;
         this.password = password;
         this.first_name = first_name;
         this.last_name = last_name;
+        this.phone=phone;
     }
 
     public  User(){
@@ -73,5 +82,21 @@ public class User {
 
     public void setLast_name(String last_name) {
         this.last_name = last_name;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }

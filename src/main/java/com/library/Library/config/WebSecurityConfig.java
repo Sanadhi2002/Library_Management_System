@@ -34,20 +34,20 @@ public class WebSecurityConfig   {
 
     @Bean
     SecurityFilterChain configure(HttpSecurity http) throws Exception {
-
-        http.authenticationProvider(authenticationProvider());
-
-        http.authorizeHttpRequests(auth ->
-                        auth.requestMatchers("/users").authenticated()
+        http
+                .authorizeRequests(authorizeRequests ->
+                        authorizeRequests
+                                .requestMatchers("/users").hasAuthority("ADMIN")
+                                .requestMatchers("/available_books").hasAuthority("MEMBERSHIP")
                                 .anyRequest().permitAll()
                 )
                 .formLogin(login ->
-                        login.usernameParameter("email")
-                                .defaultSuccessUrl("/users")
+                        login
+                                .usernameParameter("email")
+                                .defaultSuccessUrl("/available_books")
                                 .permitAll()
                 )
-                .logout(logout -> logout.logoutSuccessUrl("/").permitAll()
-                );
+                .logout(logout -> logout.logoutSuccessUrl("/").permitAll());
 
         return http.build();
     }
