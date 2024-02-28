@@ -3,6 +3,7 @@
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
+    <script src="https://cdn.tailwindcss.com"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Bootstrap CSS -->
@@ -11,73 +12,89 @@
     <title>Library System</title>
 </head>
 <body>
-
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="#">Navbar</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+<nav class="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
+    <div class="flex lg:flex-1">
+        <a href="#" class="-m-1.5 p-1.5">
+            <span class="sr-only">Your Company</span>
+            <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="">
+        </a>
+    </div>
+    <div class="flex lg:hidden">
+        <button type="button" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700">
+            <span class="sr-only">Open main menu</span>
+            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+            </svg>
         </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="/">Home</a>
-                </li>
+    </div>
+    <div class="hidden lg:flex lg:gap-x-12">
+        <a href="/" class="text-sm font-semibold leading-6 text-gray-900">Home</a>
+        <a href="available_books" class="text-sm font-semibold leading-6 text-gray-900">Available Books</a>
+        <a href="book_register" class="text-sm font-semibold leading-6 text-gray-900">Register a Book</a>
+        <a href="new_member"class="text-sm font-semibold leading-6 text-gray-900">Register a member</a>
+        <a href="users" class="text-sm font-semibold leading-6 text-gray-900">Members</a>
+        <a href="books" class="text-sm font-semibold leading-6 text-gray-900">Gallery</a>
 
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="available_books">Available Books</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="my_books">My Books</a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="book_register">Register a book</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="new_member">Add NEW MEMBER</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href=" members">Members</a>
-                </li>
-
-
-            </ul>
-
-        </div>
+    </div>
+    <div class="hidden lg:flex lg:flex-1 lg:justify-end">
+        <a href="#" class="text-sm font-semibold leading-6 text-gray-900" th:action="@{/logout}" method="post">Log out <span aria-hidden="true">&rarr;</span></a>
     </div>
 </nav>
 <div class="container">
-    <form class="col-md-4 offset-md-4" th:action="@{/saveMember}" method="post">
-        <h4>New Member Register</h4>
-        <div class="mb-3">
-            <label for="firstname" class="form-label">First Name</label>
-            <input type="text" class="form-control" id="firstname" name="firstName">
+    <form th:action="@{/saveUser}" th:object="${user}"
+          method="post" style="max-width: 600px; margin: 0 auto;">
+        <div class="m-3">
+            <div class="form-group row">
+                <label class="col-4 col-form-label">E-mail: </label>
+                <div class="col-8">
+                    <input type="email" th:field="*{email}" class="form-control" required />
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-4 col-form-label">Password: </label>
+                <div class="col-8">
+                    <input type="password" th:field="*{password}" class="form-control"
+                           required minlength="6" maxlength="10"/>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-4 col-form-label">First Name: </label>
+                <div class="col-8">
+                    <input type="text" th:field="*{first_name}" class="form-control"
+                           required minlength="2" maxlength="20"/>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-4 col-form-label">Last Name: </label>
+                <div class="col-8">
+                    <input type="text" th:field="*{last_name}" class="form-control"
+                           required minlength="2" maxlength="20" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-4 col-form-label">Phone: </label>
+                <div class="col-8">
+                    <input type="text" th:field="*{phone}" class="form-control"
+                           required minlength="2" maxlength="10" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-4 col-form-label">Role: </label>
+                <div class="col-8">
+                    <select th:field="*{role.id}" class="form-control" required>
+                        <option value="1">Admin</option>
+                        <option value="2">Membership</option>
+                    </select>
+                </div>
+            </div>
+
+            <div>
+                <button type="submit" class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Sign Up</button>
+            </div>
         </div>
-
-        <div class="mb-3">
-            <label for="lastName" class="form-label">lastName</label>
-            <input type="text" class="form-control" id="lastName" name="lastName">
-        </div>
-
-        <div class="mb-3">
-            <label for="email" class="form-label">email</label>
-            <input type="email" class="form-control" id="email" name="email">
-        </div>
-
-        <div class="mb-3">
-            <label for="phone" class="form-label">phone</label>
-            <input type="text" class="form-control" id="phone" name="phone">
-        </div>
-
-        <div class="mb-3">
-            <label for="dateOfBirth" class="form-label">dateOfBirth</label>
-            <input type="text" class="form-control" id="dateOfBirth" name="dateOfBirth">
-        </div>
-
-
-
-        <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 </div>
 

@@ -7,7 +7,6 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "MyBooks")
 public class MyBookList {
-
     @Id
     private  int id;
     private String name;

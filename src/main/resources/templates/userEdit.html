@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="ISO-8859-1">
+  <title>Sign Up - CodeJava</title>
+  <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css" />
+  <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+</head>
+<body>
+<nav class="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
+  <div class="flex lg:flex-1">
+    <a href="#" class="-m-1.5 p-1.5">
+      <span class="sr-only">Your Company</span>
+      <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="">
+    </a>
+  </div>
+  <div class="flex lg:hidden">
+    <button type="button" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700">
+      <span class="sr-only">Open main menu</span>
+      <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+      </svg>
+    </button>
+  </div>
+  <div class="hidden lg:flex lg:gap-x-12">
+    <a href="/" class="text-sm font-semibold leading-6 text-gray-900">Home</a>
+    <a href="available_books" class="text-sm font-semibold leading-6 text-gray-900">Available Books</a>
+    <a href="book_register" class="text-sm font-semibold leading-6 text-gray-900">Register a Book</a>
+    <a href="register"class="text-sm font-semibold leading-6 text-gray-900">Register a member</a>
+    <a href="users" class="text-sm font-semibold leading-6 text-gray-900">Members</a>
+    <a href="books" class="text-sm font-semibold leading-6 text-gray-900">Gallery</a>
+
+  </div>
+  <div class="hidden lg:flex lg:flex-1 lg:justify-end">
+    <a href="#" class="text-sm font-semibold leading-6 text-gray-900">Log in <span aria-hidden="true">&rarr;</span></a>
+  </div>
+</nav>
+<div class="container text-center">
+
+  <form class="col-md-4 offset-md-4" th:action="@{/saveUser}" method="post" th:object="${user}">
+    <div class="m-3">
+      <div class="form-group row">
+        <label class="col-4 col-form-label">E-mail: </label>
+        <div class="col-8">
+          <input type="email" th:field="*{email}" class="form-control" required />
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-4 col-form-label">Password: </label>
+        <div class="col-8">
+          <input type="password" th:field="*{password}" class="form-control"
+                 required minlength="6" maxlength="10"/>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-4 col-form-label">First Name: </label>
+        <div class="col-8">
+          <input type="text" th:field="*{first_name}" class="form-control"
+                 required minlength="2" maxlength="20"/>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-4 col-form-label">Last Name: </label>
+        <div class="col-8">
+          <input type="text" th:field="*{last_name}" class="form-control"
+                 required minlength="2" maxlength="20" />
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-4 col-form-label">Phone: </label>
+        <div class="col-8">
+          <input type="text" th:field="*{phone}" class="form-control"
+                 required minlength="2" maxlength="10" />
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-4 col-form-label">Role: </label>
+        <div class="col-8">
+          <select th:field="*{role.id}" class="form-control" required>
+            <option value="1">Admin</option>
+            <option value="2">Membership</option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="submit" class="btn btn-primary">Sign Up</button>
+      </div>
+    </div>
+  </form>
+</div>
+</body>
+</html>

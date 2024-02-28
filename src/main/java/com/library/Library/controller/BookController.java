@@ -7,6 +7,7 @@ import com.library.Library.entity.MyBookList;
 import com.library.Library.entity.User;
 import com.library.Library.repository.UserRepository;
 import com.library.Library.service.BookService;
+import com.library.Library.service.CustomUserDetailsService;
 import com.library.Library.service.MemberService;
 import com.library.Library.service.MyBookListService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,9 @@ public class BookController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private CustomUserDetailsService userDetailsService;
+
     @GetMapping("/")
     public String home(){
         return "home";
@@ -53,6 +57,16 @@ public class BookController {
         userRepository.save(user);
         return "register_success";
     }
+
+    @PostMapping("/saveUser")
+    public  String addUser( User user){
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encodedPassword);
+
+        userRepository.save(user);
+        return  "redirect:/users";
+    }
     @GetMapping("/login")
     public String login(){
         return "login";
@@ -64,13 +78,13 @@ public class BookController {
         return "users";
     }
 
-
-
-
     @GetMapping("/new_member")
     public String memberRegister(){
         return "memberRegister";
     }
+
+
+
 
 
 
@@ -87,6 +101,8 @@ public class BookController {
         // m.addObject("book",list);
         return new ModelAndView("bookList","book",list);
     }
+
+
 
     @GetMapping("/books")
     public ModelAndView getBooks(){
@@ -108,14 +124,26 @@ public class BookController {
         return "memberList";
     }
 
-    @PostMapping("available_books/search")
+    @PostMapping("/users/search")
+    public String searchUsers(@RequestParam String keyword, Model model) {
+        List<User> searchResults = userDetailsService.searchUsers(keyword);
+        model.addAttribute("user", searchResults);
+        return "users";
+    }
+
+    @PostMapping("/available_books/search")
     public String searchBooks(@RequestParam String keyword, Model model){
         List<Book> searchResults = service.searchBooks(keyword);
         model.addAttribute("book", searchResults);
         return "bookList";
     }
 
-
+    @PostMapping("books/search")
+    public String searchBooksClient(@RequestParam String keyword, Model model){
+        List<Book> searchResults=service.searchBooks(keyword);
+        model.addAttribute("book",searchResults);
+        return "gallery";
+    }
 
 
 
@@ -130,6 +158,9 @@ public class BookController {
         memberService.saveMember(member);
         return  "redirect:/new_member";
     }
+
+
+
 
     @GetMapping("/my_books")
     public String getMyBooks(Model model){
@@ -161,6 +192,15 @@ public class BookController {
         return "memberEdit";
     }
 
+    @RequestMapping("/editUser/{id}")
+    public String editUser(@PathVariable("id") int id, Model model){
+        User u = userDetailsService.getUserById(id);
+
+
+        model.addAttribute("user",u);
+        return "userEdit";
+    }
+
 
     @RequestMapping("/deleteBook/{id}")
     public String deleteBook(@PathVariable("id") int id){
@@ -172,6 +212,12 @@ public class BookController {
     @RequestMapping("/deleteMember/{id}")
     public String deleteMember(@PathVariable("id")int id){
         memberService.deleteById(id);
+        return "redirect:/new_member";
+    }
+
+    @RequestMapping("/deleteUser/{id}")
+    public String deleteUser(@PathVariable("id")int id){
+        userDetailsService.deleteById(id);
         return "redirect:/new_member";
     }
 

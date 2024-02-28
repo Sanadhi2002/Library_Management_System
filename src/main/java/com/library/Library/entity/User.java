@@ -2,6 +2,8 @@ package com.library.Library.entity;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name="users")
 public class User {
@@ -29,8 +31,13 @@ public class User {
     @JoinColumn(name = "role_id",  referencedColumnName = "id")
     private Role role;
 
+    @OneToMany(mappedBy = "user")
+    private List<BorrowedBook> borrowedBooks;
 
-    public User(Long id, String email, String password, String first_name, String last_name, String phone) {
+
+
+
+    public User(Long id, String email, String password, String first_name, String last_name, String phone,List<BorrowedBook> borrowedBooks) {
         super();
         this.id = id;
         this.email = email;
@@ -38,7 +45,10 @@ public class User {
         this.first_name = first_name;
         this.last_name = last_name;
         this.phone=phone;
+        this.borrowedBooks = borrowedBooks;
     }
+
+
 
     public  User(){
         super();
@@ -98,5 +108,13 @@ public class User {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public List<BorrowedBook> getBorrowedBooks() {
+        return borrowedBooks;
+    }
+
+    public void setBorrowedBooks(List<BorrowedBook> borrowedBooks) {
+        this.borrowedBooks = borrowedBooks;
     }
 }

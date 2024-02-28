@@ -10,16 +10,16 @@ public class BorrowedBook {
     private int id;
 
     @ManyToOne
-    @JoinColumn(name = "member_id", nullable = false)
-    private Member member;
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "book_id", nullable = false)
     private Book book;
 
-    public BorrowedBook(Member member, Book book) {
+    public BorrowedBook(User user, Book book) {
         super();
-        this.member = member;
+        this.user = user;
         this.book = book;
     }
 
@@ -35,12 +35,12 @@ public class BorrowedBook {
         this.id = id;
     }
 
-    public Member getMember() {
-        return member;
+    public User getUser() {
+        return user;
     }
 
-    public void setMember(Member member) {
-        this.member = member;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Book getBook() {

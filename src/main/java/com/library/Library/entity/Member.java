@@ -21,12 +21,9 @@ public class Member {
 
     private String phone;
 
-    @OneToMany(mappedBy = "member")
-    private List<BorrowedBook> borrowedBooks;
 
 
-
-    public Member(int id, String firstName, String lastName, String dateOfBirth, String email, String phone,List<BorrowedBook> borrowedBooks) {
+    public Member(int id, String firstName, String lastName, String dateOfBirth, String email, String phone) {
         super();
         this.id = id;
         this.firstName = firstName;
@@ -34,7 +31,7 @@ public class Member {
         this.dateOfBirth = dateOfBirth;
         this.email = email;
         this.phone = phone;
-        this.borrowedBooks = borrowedBooks;
+
     }
 
     public Member(){
@@ -89,11 +86,5 @@ public class Member {
         this.phone = phone;
     }
 
-    public List<BorrowedBook> getBorrowedBooks() {
-        return borrowedBooks;
-    }
 
-    public void setBorrowedBooks(List<BorrowedBook> borrowedBooks) {
-        this.borrowedBooks = borrowedBooks;
-    }
 }

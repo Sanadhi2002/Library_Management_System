@@ -4,14 +4,12 @@
     <meta charset="ISO-8859-1">
     <title>Sign Up - CodeJava</title>
     <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
     <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
     <script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
 </head>
 <body>
-<div class="container text-center">
-    <div>
-        <h1>User Registration - Sign Up</h1>
-    </div>
+<div class="container text-center mt-6">
     <form th:action="@{/process_register}" th:object="${user}"
           method="post" style="max-width: 600px; margin: 0 auto;">
         <div class="m-3">
@@ -63,7 +61,7 @@
             </div>
 
             <div>
-                <button type="submit" class="btn btn-primary">Sign Up</button>
+                <button type="submit" class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Sign Up</button>
             </div>
         </div>
     </form>

@@ -15,9 +15,12 @@ public class Book {
 
 
 
+
     private int count;
     private  String author;
     private  String price;
+
+
 
     @OneToMany(mappedBy = "book")
     private List<BorrowedBook> borrowedByMembers;
@@ -32,6 +35,7 @@ public class Book {
         this.price = price;
         this.count=count;
         this.borrowedByMembers = borrowedByMembers;
+
     }
 
     public Book(){
@@ -85,4 +89,6 @@ public class Book {
     public void setBorrowedByMembers(List<BorrowedBook> borrowedByMembers) {
         this.borrowedByMembers = borrowedByMembers;
     }
+
+
 }
