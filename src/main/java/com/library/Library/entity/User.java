@@ -46,6 +46,10 @@ public class User {
         this.last_name = last_name;
         this.phone=phone;
         this.borrowedBooks = borrowedBooks;
+
+        Role defaultRole = new Role();
+        defaultRole.setId(2);
+        this.role = defaultRole;
     }
 
 

@@ -1,13 +1,19 @@
 package com.library.Library.service;
 
+import ch.qos.logback.classic.util.LogbackMDCAdapter;
 import com.library.Library.entity.CustomUserDetails;
 import com.library.Library.entity.Member;
 import com.library.Library.entity.Role;
 import com.library.Library.entity.User;
 import com.library.Library.repository.UserRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -22,6 +28,9 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Autowired
     private UserRepository userRepo;
+
+    @PersistenceContext
+    EntityManager entityManager;
 
 
     public void saveUser(User user){
@@ -62,5 +71,19 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
 
+    public String getCurrentUser(){
+        Authentication authentication= SecurityContextHolder.getContext().getAuthentication();
 
+        if(authentication!=null&& authentication.isAuthenticated()){
+            return authentication.getName();
+        }
+
+        return null;
+    }
+
+    public String LogoutUser(){
+        SecurityContextHolder.clearContext();
+        entityManager.clear();
+        return "redirect:/home";
+    }
 }

@@ -1,15 +1,14 @@
 package com.library.Library.controller;
 
 
-import com.library.Library.entity.Book;
-import com.library.Library.entity.Member;
-import com.library.Library.entity.MyBookList;
-import com.library.Library.entity.User;
+import com.library.Library.entity.*;
 import com.library.Library.repository.UserRepository;
 import com.library.Library.service.BookService;
 import com.library.Library.service.CustomUserDetailsService;
 import com.library.Library.service.MemberService;
 import com.library.Library.service.MyBookListService;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -37,6 +36,9 @@ public class BookController {
     @Autowired
     private CustomUserDetailsService userDetailsService;
 
+    @PersistenceContext
+    private EntityManager entityManager;
+
     @GetMapping("/")
     public String home(){
         return "home";
@@ -50,6 +52,18 @@ public class BookController {
 
     @PostMapping("/process_register")
     public  String processRegister(User user){
+
+        Role defaultRole = entityManager.find(Role.class, 2);
+
+        // Check if the role with ID 2 exists
+        if (defaultRole == null) {
+            // Handle the case where the role with ID 2 does not exist
+            return "register";
+        }
+
+        // Set the default role for the user
+        user.setRole(defaultRole);
+
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
@@ -220,6 +234,45 @@ public class BookController {
         userDetailsService.deleteById(id);
         return "redirect:/new_member";
     }
+
+    @GetMapping("/logout")
+    public String logout(Model model){
+
+        String userEmail = userDetailsService.getCurrentUser();
+
+        if (userEmail != null) {
+            model.addAttribute("userEmail", userEmail);
+            return  userDetailsService.LogoutUser();
+        } else {
+            // Handle the case where the user is not authenticated
+            return "redirect:/home"; // Redirect to the login page or another appropriate action
+        }
+
+    }
+
+    @RequestMapping("/profile")
+    public String getProfilePage(){
+
+        return "profile";
+    }
+    @GetMapping("/profile")
+    public String userProfile(Model model){
+        String userEmail = userDetailsService.getCurrentUser();
+
+        if (userEmail != null) {
+            model.addAttribute("userEmail", userEmail);
+            return "profile";
+        } else {
+            // Handle the case where the user is not authenticated
+            return "redirect:/"; // Redirect to the login page or another appropriate action
+        }
+
+
+    }
+
+
+
+
 
 
 

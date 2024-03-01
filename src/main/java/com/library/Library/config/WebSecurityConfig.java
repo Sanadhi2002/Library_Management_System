@@ -45,10 +45,14 @@ public class WebSecurityConfig   {
                         login
                                 .usernameParameter("email")
 
+
                                 .permitAll()
+                                .defaultSuccessUrl("/books")
                 )
                 .logout(logout -> logout.logoutSuccessUrl("/").permitAll());
 
         return http.build();
     }
+
+
 }

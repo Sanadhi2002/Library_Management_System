@@ -15,49 +15,7 @@
     <title>Library System</title>
 </head>
 <body>
-<!--
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="#">Navbar</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="/">Home</a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="available_books">Available Books</a>
-                </li>
-
-
-                <li class="nav-item">
-                    <a class="nav-link active " aria-current="page" href="book_register">Register a book</a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="new_member">Add NEW MEMBER</a>
-                </li>
-
-
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="users">Members</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="books">Books</a>
-                </li>
-
-
-
-            </ul>
-
-        </div>
-    </div>
-</nav>-->
-
-<div class="bg-white">
+<div class="bg-white" >
     <header class="absolute inset-x-0 top-0 z-50">
         <nav class="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
             <div class="flex lg:flex-1">
@@ -74,18 +32,17 @@
                     </svg>
                 </button>
             </div>
-            <div class="hidden lg:flex lg:gap-x-12">
+            <div class="hidden lg:flex lg:gap-x-12" th:if="${userEmail != null}">
                 <a href="/" class="text-sm font-semibold leading-6 text-gray-900">Home</a>
                 <a href="available_books" class="text-sm font-semibold leading-6 text-gray-900">Available Books</a>
                 <a href="book_register" class="text-sm font-semibold leading-6 text-gray-900">Register a Book</a>
                 <a href="register"class="text-sm font-semibold leading-6 text-gray-900">Register a member</a>
                 <a href="users" class="text-sm font-semibold leading-6 text-gray-900">Members</a>
                 <a href="books" class="text-sm font-semibold leading-6 text-gray-900">Gallery</a>
+                <a href="profile" class="text-sm font-semibold leading-6 text-gray-900">My Profile</a>
 
             </div>
-            <div class="hidden lg:flex lg:flex-1 lg:justify-end">
-                <a href="#" class="text-sm font-semibold leading-6 text-gray-900" th:action="@{/logout}" method="post">Log out <span aria-hidden="true">&rarr;</span></a>
-            </div>
+
         </nav>
         <!-- Mobile menu, show/hide based on menu open state. -->
         <div class="lg:hidden" role="dialog" aria-modal="true">
@@ -104,7 +61,7 @@
                         </svg>
                     </button>
                 </div>
-                <div class="mt-6 flow-root">
+                <div class="mt-6 flow-root" th:if="${userEmail != null}">
                     <div class="-my-6 divide-y divide-gray-500/10">
                         <div class="space-y-2 py-6">
 

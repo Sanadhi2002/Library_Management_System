@@ -33,11 +33,10 @@
         <a href="register"class="text-sm font-semibold leading-6 text-gray-900">Register a member</a>
         <a href="users" class="text-sm font-semibold leading-6 text-gray-900">Members</a>
         <a href="books" class="text-sm font-semibold leading-6 text-gray-900">Gallery</a>
+        <a href="profile" class="text-sm font-semibold leading-6 text-gray-900">My Profile</a>
 
     </div>
-    <div class="hidden lg:flex lg:flex-1 lg:justify-end">
-        <a href="#" class="text-sm font-semibold leading-6 text-gray-900" th:action="@{/logout}" method="post">Log out <span aria-hidden="true">&rarr;</span></a>
-    </div>
+
 </nav>
 <div class="container mt-6">
     <form class="col-md-4 offset-md-4" th:action="@{/save}" method="post">
