@@ -104,6 +104,7 @@ public class BookController {
     @GetMapping("/available_books")
     public ModelAndView getAllBook(){
         List<Book> list=service.getAllBook();
+
         // ModelAndView  m=new ModelAndView();
         // m.setViewName("bookList");
         // m.addObject("book",list);
@@ -115,7 +116,10 @@ public class BookController {
     @GetMapping("/books")
     public ModelAndView getBooks(){
         List<Book> list=service.getAllBook();
-        return new ModelAndView("gallery","book",list);
+        List<Book> availableBooks = list.stream()
+                .filter(book -> book.getCount() > 0)
+                .collect(Collectors.toList());
+        return new ModelAndView("gallery","book",availableBooks);
 
     }
 
