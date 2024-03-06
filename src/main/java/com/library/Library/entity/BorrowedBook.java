@@ -24,10 +24,14 @@ public class BorrowedBook {
     @Column(nullable = false)
     private LocalDate borrowDate;
 
-    public BorrowedBook(User user, Book book) {
+    @Column(nullable = false, columnDefinition = "boolean default false")
+    private  boolean isReturned = false;
+
+    public BorrowedBook(User user, Book book, boolean isReturned) {
         this.user = user;
         this.book = book;
         this.borrowDate = LocalDate.now();
+        this.isReturned = isReturned;
     }
 
     public BorrowedBook() {
@@ -64,5 +68,14 @@ public class BorrowedBook {
 
     public void setBorrowDate(LocalDate borrowDate) {
         this.borrowDate = borrowDate;
+    }
+
+
+    public boolean isReturned() {
+        return isReturned;
+    }
+
+    public void setReturned(boolean returned) {
+        isReturned = returned;
     }
 }

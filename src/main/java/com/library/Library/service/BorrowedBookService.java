@@ -29,6 +29,7 @@ public class BorrowedBookService {
     }
 
     public void delete(BorrowedBook borrowedBook) {
+
         bRepo.delete(borrowedBook);
     }
 
@@ -36,7 +37,13 @@ public class BorrowedBookService {
         return bRepo.findByUserAndBook(user, book);
     }
 
+
+
     public BorrowedBook findById(int id) {
-       return bRepo.findById(id).orElse(null);
+        return bRepo.findByIdAndIsReturnedFalse(id);
+    }
+
+    public List<BorrowedBook> findByUserAndIsReturnedFalse(User currentUser) {
+        return bRepo.findByUserAndIsReturnedFalse(currentUser);
     }
 }

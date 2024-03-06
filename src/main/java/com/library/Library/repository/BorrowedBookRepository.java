@@ -15,4 +15,8 @@ public interface BorrowedBookRepository extends JpaRepository<BorrowedBook, Inte
     List<BorrowedBook> findByUser(User user);
 
     BorrowedBook findByUserAndBook(User user, Book book);
+
+    List<BorrowedBook> findByUserAndIsReturnedFalse(User user);
+
+    BorrowedBook findByIdAndIsReturnedFalse(int id);
 }

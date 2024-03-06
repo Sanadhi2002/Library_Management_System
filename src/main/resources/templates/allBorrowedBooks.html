@@ -85,6 +85,7 @@
       <th scope="col">Author</th>
       <th scope="col">Date of Borrow</th>
       <th scope="col">Borrowed By</th>
+      <th scope="col">Status</th>
 
     </tr>
     </thead>
@@ -94,6 +95,7 @@
       <td th:text="${borrowedBook.book.author}"></td>
       <td th:text="${#temporals.format(borrowedBook.borrowDate, 'yyyy-MM-dd')}"></td>
       <td th:text="${borrowedBook.user.email}"></td>
+      <td th:text="${borrowedBook.isReturned()}"></td>
     </tr>
     </tbody>
   </table>

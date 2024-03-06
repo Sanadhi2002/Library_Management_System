@@ -2,6 +2,7 @@ package com.library.Library.controller;
 
 
 import com.library.Library.entity.*;
+import java.util.stream.Collectors;
 import com.library.Library.repository.UserRepository;
 import com.library.Library.service.*;
 import jakarta.persistence.EntityManager;
@@ -253,10 +254,8 @@ public class BookController {
         if (b.getCount() > 0) {
             b.setCount(b.getCount() - 1);
             service.save(b);
-
             User currentUser = userDetailsService.getCurrentUserEntity();
-
-            BorrowedBook borrowedBook = new BorrowedBook(currentUser, b);
+            BorrowedBook borrowedBook = new BorrowedBook(currentUser, b, false);
             borrowedBookService.save(borrowedBook);
 
         }else{
@@ -272,7 +271,7 @@ public class BookController {
     public ModelAndView BorrowedBooksByUser(Model model){
 
         User currentUser=userDetailsService.getCurrentUserEntity();
-        List<BorrowedBook> borrowedBooks = currentUser.getBorrowedBooks();
+        List<BorrowedBook> borrowedBooks = borrowedBookService.findByUserAndIsReturnedFalse(currentUser);
 
         model.addAttribute("borrowedBooks", borrowedBooks);
         return new ModelAndView("BooksBorrowed","borrowedBooks",borrowedBooks);
@@ -281,6 +280,8 @@ public class BookController {
     @GetMapping("/all_borrowed_books")
     public ModelAndView DisplayAllBorrowedBooks(Model model){
         List<BorrowedBook> borrowedBooks=borrowedBookService.displayAllBorrowedBooks();
+       // borrowedBooks = borrowedBooks.stream().filter(b -> !b.isReturned()).collect(Collectors.toList());
+
         model.addAttribute("borrowedBooks", borrowedBooks);
         return  new ModelAndView("allBorrowedBooks","borrrowedBooks",borrowedBooks);
 
@@ -295,8 +296,10 @@ public class BookController {
             Book book=borrowedBook.getBook();
             book.setCount(book.getCount()+1);
             service.save(book);
+            borrowedBook.setReturned(true);
+            borrowedBookService.save(borrowedBook);
+            //borrowedBookService.delete(borrowedBook);
 
-            borrowedBookService.delete(borrowedBook);
         }else {
             System.out.println("Return failed");
         }

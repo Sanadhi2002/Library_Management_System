@@ -89,7 +89,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="borrowedBook:${borrowedBooks} ">
+        <tr th:each="borrowedBook:${borrowedBooks}  ">
             <td th:text="${borrowedBook.book.name}"></td>
             <td th:text="${borrowedBook.book.author}"></td>
             <td th:text="${#temporals.format(borrowedBook.borrowDate, 'yyyy-MM-dd')}"></td>
