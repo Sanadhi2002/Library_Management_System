@@ -17,6 +17,8 @@ public class Book {
     private  String author;
     private  String price;
 
+
+
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
     private List<BorrowedBook> borrowedBooks;
 
