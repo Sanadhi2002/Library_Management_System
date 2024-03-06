@@ -21,8 +21,6 @@ public class BookController {
     @Autowired
     private BookService service;
 
-    @Autowired
-    private MyBookListService myBookService;
 
     @Autowired
     private MemberService memberService;
@@ -170,22 +168,6 @@ public class BookController {
 
 
 
-
-    @GetMapping("/my_books")
-    public String getMyBooks(Model model){
-        List<MyBookList> list=myBookService.getAllMyBooks();
-        model.addAttribute("book",list);
-        return "myBooks";
-    }
-
-    @RequestMapping("/mylist/{id}")
-    public String getMyList(@PathVariable("id") int id) {
-        Book b = service.getBookById(id);
-        MyBookList mb = new MyBookList(b.getId(), b.getName(), b.getAuthor(), b.getPrice());
-        myBookService.saveMyBooks(mb);
-        return "redirect:/my_books";
-    }
-
     @RequestMapping("/editBook/{id}")
     public String editBook(@PathVariable("id") int id, Model model){
         Book b =service.getBookById(id);
@@ -282,5 +264,16 @@ public class BookController {
         }
         return "redirect:/gallery";
     }
+
+    @GetMapping("/borrowed_books")
+    public ModelAndView BorrowedBooksByUser(Model model){
+
+        User currentUser=userDetailsService.getCurrentUserEntity();
+        List<BorrowedBook> borrowedBooks = currentUser.getBorrowedBooks();
+
+        model.addAttribute("borrowedBooks", borrowedBooks);
+        return new ModelAndView("BooksBorrowed","borrowedBooks",borrowedBooks);
+    }
+
 
 }

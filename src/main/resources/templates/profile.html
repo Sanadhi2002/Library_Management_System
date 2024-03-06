@@ -45,6 +45,7 @@
 </nav>
 <div th:if="${userEmail != null}">
   <h1>Welcome, <span th:text="${userEmail}"></span>!</h1>
+  <a href="borrowed_books">Borrowed Books</a>
 </div>
 
 <div th:if="${userEmail == null}">

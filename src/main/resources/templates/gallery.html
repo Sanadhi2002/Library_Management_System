@@ -52,7 +52,7 @@
           <p>By: </p>
           <h5 class="card-title" th:text="${b.author}"></h5>
           <form method="post" th:action="@{/borrowBook/{id}(id=${b.id})}">
-            <button type="submit" class="btn btn-primary">Borrow</button>
+            <button type="submit" class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Borrow</button>
           </form>
         </div>
       </div>
