@@ -3,10 +3,7 @@ package com.library.Library.controller;
 
 import com.library.Library.entity.*;
 import com.library.Library.repository.UserRepository;
-import com.library.Library.service.BookService;
-import com.library.Library.service.CustomUserDetailsService;
-import com.library.Library.service.MemberService;
-import com.library.Library.service.MyBookListService;
+import com.library.Library.service.*;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +33,8 @@ public class BookController {
     @Autowired
     private CustomUserDetailsService userDetailsService;
 
+    @Autowired
+    private BorrowedBookService borrowedBookService;
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -96,10 +95,6 @@ public class BookController {
     public String memberRegister(){
         return "memberRegister";
     }
-
-
-
-
 
 
     @GetMapping("/book_register")
@@ -270,21 +265,22 @@ public class BookController {
 
     }
 
+    @PostMapping("/borrowBook/{id}")
+    public String borrowBook(@PathVariable("id") int id){
+        Book b = service.getBookById(id);
+        if (b.getCount() > 0) {
+            b.setCount(b.getCount() - 1);
+            service.save(b);
 
+            User currentUser = userDetailsService.getCurrentUserEntity();
 
+            BorrowedBook borrowedBook = new BorrowedBook(currentUser, b);
+            borrowedBookService.save(borrowedBook);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+        }else{
+            System.out.println("boorrow failed");
+        }
+        return "redirect:/gallery";
+    }
 
 }

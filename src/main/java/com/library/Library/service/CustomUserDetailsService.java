@@ -86,4 +86,11 @@ public class CustomUserDetailsService implements UserDetailsService {
         entityManager.clear();
         return "redirect:/home";
     }
+
+    public User getCurrentUserEntity() {
+    String email = getCurrentUser();
+            User user= userRepo.findUserByEmailWithRole(email);
+            return user;
+
+    }
 }

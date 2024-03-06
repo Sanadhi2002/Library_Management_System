@@ -51,7 +51,9 @@
           <h5 class="card-title" th:text="${b.name}"></h5>
           <p>By: </p>
           <h5 class="card-title" th:text="${b.author}"></h5>
-          <a href="#" class="btn btn-primary">Borrow</a>
+          <form method="post" th:action="@{/borrowBook/{id}(id=${b.id})}">
+            <button type="submit" class="btn btn-primary">Borrow</button>
+          </form>
         </div>
       </div>
     </div>

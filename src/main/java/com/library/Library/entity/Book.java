@@ -13,28 +13,23 @@ public class Book {
     private int id;
     private  String name;
 
-
-
-
     private int count;
     private  String author;
     private  String price;
 
-
-
-    @OneToMany(mappedBy = "book")
-    private List<BorrowedBook> borrowedByMembers;
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
+    private List<BorrowedBook> borrowedBooks;
 
 
 
-    public Book(int id, String name, String author, String price, int count,List<BorrowedBook> borrowedByMembers) {
+    public Book(int id, String name, String author, String price, int count,List<BorrowedBook> borrowedBooks) {
         super();
         this.id = id;
         this.name = name;
         this.author = author;
         this.price = price;
         this.count=count;
-        this.borrowedByMembers = borrowedByMembers;
+        this.borrowedBooks = borrowedBooks;
 
     }
 
@@ -82,13 +77,11 @@ public class Book {
         this.count = count;
     }
 
-    public List<BorrowedBook> getBorrowedByMembers() {
-        return borrowedByMembers;
+    public List<BorrowedBook> getBorrowedBooks() {
+        return borrowedBooks;
     }
 
-    public void setBorrowedByMembers(List<BorrowedBook> borrowedByMembers) {
-        this.borrowedByMembers = borrowedByMembers;
+    public void setBorrowedBooks(List<BorrowedBook> borrowedBooks) {
+        this.borrowedBooks = borrowedBooks;
     }
-
-
 }

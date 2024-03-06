@@ -31,13 +31,15 @@ public class User {
     @JoinColumn(name = "role_id",  referencedColumnName = "id")
     private Role role;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<BorrowedBook> borrowedBooks;
 
 
 
 
-    public User(Long id, String email, String password, String first_name, String last_name, String phone,List<BorrowedBook> borrowedBooks) {
+
+
+    public User(Long id, String email, String password, String first_name, String last_name, String phone, List<BorrowedBook> borrowedBooks ) {
         super();
         this.id = id;
         this.email = email;
@@ -45,7 +47,7 @@ public class User {
         this.first_name = first_name;
         this.last_name = last_name;
         this.phone=phone;
-        this.borrowedBooks = borrowedBooks;
+        this.borrowedBooks=borrowedBooks;
 
         Role defaultRole = new Role();
         defaultRole.setId(2);

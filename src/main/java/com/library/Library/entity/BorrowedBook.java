@@ -1,26 +1,33 @@
 package com.library.Library.entity;
 
+
 import jakarta.persistence.*;
+
+import java.time.LocalDate;
 
 @Entity
 public class BorrowedBook {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY )
+    private  int id;
+
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "book_id", nullable = false)
+    @JoinColumn(name = "book_id", referencedColumnName = "id")
     private Book book;
 
+    @Column(nullable = false)
+    private LocalDate borrowDate;
+
     public BorrowedBook(User user, Book book) {
-        super();
         this.user = user;
         this.book = book;
+        this.borrowDate = LocalDate.now();
     }
 
     public BorrowedBook() {
@@ -49,5 +56,13 @@ public class BorrowedBook {
 
     public void setBook(Book book) {
         this.book = book;
+    }
+
+    public LocalDate getBorrowDate() {
+        return borrowDate;
+    }
+
+    public void setBorrowDate(LocalDate borrowDate) {
+        this.borrowDate = borrowDate;
     }
 }
