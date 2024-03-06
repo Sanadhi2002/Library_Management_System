@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "tw-elements": "^2.0.0"
+  },
+  "devDependencies": {
+    "daisyui": "^4.7.2"
+  }
+}

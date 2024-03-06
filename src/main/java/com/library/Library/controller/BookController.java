@@ -262,7 +262,7 @@ public class BookController {
         }else{
             System.out.println("boorrow failed");
         }
-        return "redirect:/gallery";
+        return "redirect:/books";
     }
 
 
