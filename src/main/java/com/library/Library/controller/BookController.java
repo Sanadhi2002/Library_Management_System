@@ -265,6 +265,9 @@ public class BookController {
         return "redirect:/gallery";
     }
 
+
+
+
     @GetMapping("/borrowed_books")
     public ModelAndView BorrowedBooksByUser(Model model){
 
@@ -278,9 +281,27 @@ public class BookController {
     @GetMapping("/all_borrowed_books")
     public ModelAndView DisplayAllBorrowedBooks(Model model){
         List<BorrowedBook> borrowedBooks=borrowedBookService.displayAllBorrowedBooks();
-
         model.addAttribute("borrowedBooks", borrowedBooks);
         return  new ModelAndView("allBorrowedBooks","borrrowedBooks",borrowedBooks);
+
+    }
+
+    @PostMapping("/returnBook/{id}")
+    public String returnBook(@PathVariable("id") int id) {
+
+        BorrowedBook borrowedBook= borrowedBookService.findById(id);
+
+        if(borrowedBook!=null){
+            Book book=borrowedBook.getBook();
+            book.setCount(book.getCount()+1);
+            service.save(book);
+
+            borrowedBookService.delete(borrowedBook);
+        }else {
+            System.out.println("Return failed");
+        }
+        return "redirect:/borrowed_books";
+
 
     }
 

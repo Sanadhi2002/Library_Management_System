@@ -43,7 +43,6 @@
     <table class="table table-striped  table-hover">
         <thead>
         <tr>
-
             <th scope="col">Book Name</th>
             <th scope="col">Author</th>
             <th scope="col">Date of Borrow</th>
@@ -56,7 +55,9 @@
             <td th:text="${borrowedBook.book.author}"></td>
             <td th:text="${#temporals.format(borrowedBook.borrowDate, 'yyyy-MM-dd')}"></td>
             <td>
-                <a href="#">Return</a>
+                <form method="post" th:action="@{/returnBook/{id}(id=${borrowedBook.id})}">
+                    <button type="submit" class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Return</button>
+                </form>
             </td>
         </tr>
         </tbody>
