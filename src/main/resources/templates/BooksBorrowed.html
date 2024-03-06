@@ -55,11 +55,8 @@
             <td th:text="${borrowedBook.book.name}"></td>
             <td th:text="${borrowedBook.book.author}"></td>
             <td th:text="${#temporals.format(borrowedBook.borrowDate, 'yyyy-MM-dd')}"></td>
-
             <td>
-
                 <a href="#">Return</a>
-
             </td>
         </tr>
         </tbody>

@@ -275,5 +275,14 @@ public class BookController {
         return new ModelAndView("BooksBorrowed","borrowedBooks",borrowedBooks);
     }
 
+    @GetMapping("/all_borrowed_books")
+    public ModelAndView DisplayAllBorrowedBooks(Model model){
+        List<BorrowedBook> borrowedBooks=borrowedBookService.displayAllBorrowedBooks();
+
+        model.addAttribute("borrowedBooks", borrowedBooks);
+        return  new ModelAndView("allBorrowedBooks","borrrowedBooks",borrowedBooks);
+
+    }
+
 
 }

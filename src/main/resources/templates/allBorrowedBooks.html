@@ -1,5 +1,5 @@
-<!doctype html>
-<html lang="en" xmlns:th="https://www.thymeleaf.com">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
   <!-- Required meta tags -->
   <meta charset="utf-8">
@@ -8,7 +8,7 @@
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
-  <title>Books</title>
+  <title>Library System</title>
 </head>
 <body>
 <nav class="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
@@ -29,37 +29,36 @@
   <div class="hidden lg:flex lg:gap-x-12">
     <a href="/" class="text-sm font-semibold leading-6 text-gray-900">Home</a>
     <a href="available_books" class="text-sm font-semibold leading-6 text-gray-900">Available Books</a>
-    <a href="all_borrowed_books" class="text-sm font-semibold leading-6 text-gray-900" >Borrowed Books</a>
     <a href="book_register" class="text-sm font-semibold leading-6 text-gray-900">Register a Book</a>
     <a href="register"class="text-sm font-semibold leading-6 text-gray-900">Register a member</a>
     <a href="users" class="text-sm font-semibold leading-6 text-gray-900">Members</a>
     <a href="books" class="text-sm font-semibold leading-6 text-gray-900">Gallery</a>
     <a href="profile" class="text-sm font-semibold leading-6 text-gray-900">My Profile</a>
 
-
   </div>
 
 </nav>
+
 <div class="container">
-  <form method="post" action="/books/search">
-    <input type="text" name="keyword" placeholder="Search by name">
-    <button type="submit">Search</button>
-  </form>
-  <div class="row">
-    <div th:each="b : ${book}" class="col-md-4">
-      <div class="card" style="width: 18rem;">
-        <img src="..." class="card-img-top" alt="...">
-        <div class="card-body">
-          <h5 class="card-title" th:text="${b.name}"></h5>
-          <p>By: </p>
-          <h5 class="card-title" th:text="${b.author}"></h5>
-          <form method="post" th:action="@{/borrowBook/{id}(id=${b.id})}">
-            <button type="submit" class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Borrow</button>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
+  <table class="table table-striped  table-hover">
+    <thead>
+    <tr>
+
+      <th scope="col">Book Name</th>
+      <th scope="col">Author</th>
+      <th scope="col">Date of Borrow</th>
+      <th scope="col">Borrowed By</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="borrowedBook:${borrowedBooks} ">
+      <td th:text="${borrowedBook.book.name}"></td>
+      <td th:text="${borrowedBook.book.author}"></td>
+      <td th:text="${#temporals.format(borrowedBook.borrowDate, 'yyyy-MM-dd')}"></td>
+      <td th:text="${borrowedBook.user.email}"></td>
+    </tr>
+    </tbody>
+  </table>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>

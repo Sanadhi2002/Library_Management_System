@@ -22,4 +22,8 @@ public class BorrowedBookService {
     public List<BorrowedBook> getBorrowedBooksByUser(User user){
         return bRepo.findByUser (user);
     }
+
+    public List<BorrowedBook> displayAllBorrowedBooks(){
+        return bRepo.findAll();
+    }
 }
