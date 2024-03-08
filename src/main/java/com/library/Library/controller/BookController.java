@@ -2,6 +2,12 @@ package com.library.Library.controller;
 
 
 import com.library.Library.entity.*;
+
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Base64;
 import java.util.stream.Collectors;
 import com.library.Library.repository.UserRepository;
 import com.library.Library.service.*;
@@ -12,6 +18,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -101,6 +108,28 @@ public class BookController {
         return "bookRegister";
     }
 
+    @PostMapping("/save")
+    public String addBook(@ModelAttribute Book b, @RequestParam("image") MultipartFile imageFile) {
+        try {
+            // Save the image to a file system
+            String imagePath = "/" + imageFile.getOriginalFilename();
+            Files.write(Paths.get(imagePath), imageFile.getBytes());
+
+            // Set the image URL in your Book entity
+            b.setImageURL(imagePath);
+
+            // Save the book entity
+            service.save(b);
+
+            return "redirect:/available_books";
+        } catch (IOException e) {
+            // Handle exception (e.g., log it, show an error message)
+            e.printStackTrace();
+            return "error"; // Add appropriate error handling
+        }
+    }
+
+
     @GetMapping("/available_books")
     public ModelAndView getAllBook(){
         List<Book> list=service.getAllBook();
@@ -119,6 +148,7 @@ public class BookController {
         List<Book> availableBooks = list.stream()
                 .filter(book -> book.getCount() > 0)
                 .collect(Collectors.toList());
+
         return new ModelAndView("gallery","book",availableBooks);
 
     }
@@ -159,11 +189,7 @@ public class BookController {
 
 
 
-    @PostMapping("/save")
-    public String addBook(@ModelAttribute Book b){
-        service.save(b);
-        return "redirect:/available_books";
-    }
+
 
     @PostMapping("/saveMember")
     public  String addMember(@ModelAttribute Member member){

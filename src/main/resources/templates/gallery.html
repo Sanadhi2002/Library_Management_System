@@ -79,13 +79,14 @@
 
 <div class="container mt-20">
   <div class="row">
-    <div th:each="b : ${book}" class="col-md-4">
-      <div class="card" style="width: 18rem;">
-        <img src="..." class="card-img-top" alt="...">
+    <div th:each="b : ${book}" class="col-md-4 p-4 ">
+      <div class="card" style="width: 18rem; "  >
+        <img  th:src="@{'/' + ${b.imageURL}}" class="card-img-top" alt="book cover" style="height: 16rem">
         <div class="card-body">
-          <h5 class="card-title" th:text="${b.name}"></h5>
-          <p>By: </p>
+          <h3 class="card-title font-bold" th:text="${b.name}"></h3>
+          <p >By:
           <h5 class="card-title" th:text="${b.author}"></h5>
+          </p>
           <form method="post" th:action="@{/borrowBook/{id}(id=${b.id})}">
             <button type="submit" class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Borrow</button>
           </form>

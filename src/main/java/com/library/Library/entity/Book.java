@@ -22,9 +22,12 @@ public class Book {
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
     private List<BorrowedBook> borrowedBooks;
 
+   @Column(name = "image_URL")
+   private  String imageURL;
 
 
-    public Book(int id, String name, String author, String price, int count,List<BorrowedBook> borrowedBooks) {
+
+    public Book(int id, String name, String author, String price, int count,List<BorrowedBook> borrowedBooks, String imageURL) {
         super();
         this.id = id;
         this.name = name;
@@ -32,6 +35,8 @@ public class Book {
         this.price = price;
         this.count=count;
         this.borrowedBooks = borrowedBooks;
+        this.imageURL= imageURL;
+
 
     }
 
@@ -86,4 +91,14 @@ public class Book {
     public void setBorrowedBooks(List<BorrowedBook> borrowedBooks) {
         this.borrowedBooks = borrowedBooks;
     }
+
+    public String getImageURL() {
+        return imageURL;
+    }
+
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
+    }
+
+
 }

@@ -78,7 +78,7 @@
     </div>
 </header>
 <div class="container mt-20">
-    <form class="col-md-4 offset-md-4" th:action="@{/save}" method="post">
+    <form enctype="multipart/form-data" class="col-md-4 offset-md-4" th:action="@{/save}" method="post">
         <div class="mb-3">
             <label for="name" class="form-label">Name</label>
             <input type="text" class="form-control" id="name" name="name">
