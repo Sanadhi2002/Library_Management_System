@@ -111,21 +111,20 @@ public class BookController {
     @PostMapping("/save")
     public String addBook(@ModelAttribute Book b, @RequestParam("image") MultipartFile imageFile) {
         try {
-            // Save the image to a file system
             String imagePath = "/" + imageFile.getOriginalFilename();
             Files.write(Paths.get(imagePath), imageFile.getBytes());
 
-            // Set the image URL in your Book entity
+
             b.setImageURL(imagePath);
 
-            // Save the book entity
+
             service.save(b);
 
             return "redirect:/available_books";
         } catch (IOException e) {
-            // Handle exception (e.g., log it, show an error message)
+
             e.printStackTrace();
-            return "error"; // Add appropriate error handling
+            return "error";
         }
     }
 
