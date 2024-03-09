@@ -141,18 +141,16 @@ public class BookController {
         }
     }
 
-
-
-
-
-    @GetMapping("/books")
-    public ModelAndView getBooks(){
-        List<Book> list=service.getAllBook();
+    @RequestMapping("/books")
+    public String  getBooks(Model model, @Param("keyword") String keyword){
+        List<Book> list=service.listAll(keyword);
         List<Book> availableBooks = list.stream()
                 .filter(book -> book.getCount() > 0)
                 .collect(Collectors.toList());
 
-        return new ModelAndView("gallery","book",availableBooks);
+        model.addAttribute("book",availableBooks);
+        model.addAttribute("keyword", keyword);
+        return "gallery";
 
     }
 
