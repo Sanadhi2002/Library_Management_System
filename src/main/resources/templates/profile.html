@@ -130,6 +130,7 @@
         </li>
 
 
+
       </ul>
     </nav>
   </div>
@@ -171,6 +172,12 @@
       <a
               class="inline-flex items-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:text-accent-foreground h-9 px-4 py-2 hover:bg-transparent hover:underline justify-start"
               href="borrowed_books">Borrowed Books</a>
+
+      <div th:if="${userEmail != null}"  class="inline-flex items-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:text-accent-foreground h-9 px-4 py-2 hover:bg-transparent hover:underline justify-start">
+        <form th:action="logout" method="post">
+          <input type="submit" value="Log out" class="text-sm font-semibold leading-6 text-gray-900"/>
+        </form>
+      </div>
     </nav>
 
     <div class="flex-1 lg:max-w-2xl">

@@ -34,12 +34,13 @@ public class WebSecurityConfig   {
 
     @Bean
     SecurityFilterChain configure(HttpSecurity http) throws Exception {
-        http
-                .authorizeRequests(authorizeRequests ->
-                        authorizeRequests
-                                .requestMatchers("/users").hasAuthority("ADMIN")
-                               // .requestMatchers("/available_books").hasAuthority("MEMBERSHIP")
+        http.authenticationProvider(authenticationProvider());
+
+        http.authorizeHttpRequests(auth ->
+                        auth.requestMatchers("/users").authenticated()
                                 .anyRequest().permitAll()
+
+
                 )
                 .formLogin(login ->
                         login

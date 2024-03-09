@@ -34,4 +34,11 @@ public class BookService {
     public List<Book> searchBooks(String keyword){
         return bRepo.findByNameContainingOrAuthorContaining(keyword, keyword);
     }
+
+    public List<Book> listAll(String keyword) {
+        if (keyword != null) {
+            return bRepo.findByKeyword(keyword);
+        }
+        return bRepo.findAll();
+    }
 }

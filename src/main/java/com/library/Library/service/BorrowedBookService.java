@@ -46,4 +46,11 @@ public class BorrowedBookService {
     public List<BorrowedBook> findByUserAndIsReturnedFalse(User currentUser) {
         return bRepo.findByUserAndIsReturnedFalse(currentUser);
     }
+
+    public List<BorrowedBook> listAll(String keyword) {
+        if (keyword != null) {
+            return bRepo.findByKeyword(keyword);
+        }
+        return bRepo.findAll();
+    }
 }

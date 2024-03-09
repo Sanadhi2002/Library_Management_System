@@ -14,6 +14,7 @@ import com.library.Library.service.*;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -90,12 +91,24 @@ public class BookController {
     public String login(){
         return "login";
     }
-    @GetMapping("/users")
-    public String listUsers(Model model) {
-        List<User> listUsers = userRepository.findAll();
+    @RequestMapping("/users")
+    public String listUsers(Model model,@Param("keyword") String keyword){
+        List<User> listUsers =userDetailsService.listAll(keyword);
         model.addAttribute("listUsers", listUsers);
+        model.addAttribute("keyword", keyword);
         return "users";
     }
+    @RequestMapping("/available_books")
+    public String getAllBook(Model model, @Param("keyword") String keyword){
+        List<Book> list=service.listAll(keyword);
+        model.addAttribute("book",list);
+        model.addAttribute("keyword", keyword);
+
+        return "bookList";
+    }
+
+
+
 
     @GetMapping("/new_member")
     public String memberRegister(){
@@ -129,15 +142,6 @@ public class BookController {
     }
 
 
-    @GetMapping("/available_books")
-    public ModelAndView getAllBook(){
-        List<Book> list=service.getAllBook();
-
-        // ModelAndView  m=new ModelAndView();
-        // m.setViewName("bookList");
-        // m.addObject("book",list);
-        return new ModelAndView("bookList","book",list);
-    }
 
 
 
@@ -157,37 +161,6 @@ public class BookController {
         List<Member> memberList=memberService.getAllMembers();
         return  new ModelAndView("memberList","member",memberList);
     }
-
-    @PostMapping("/members/search")
-    public String searchMembers(@RequestParam String keyword, Model model){
-        List<Member> searchResults = memberService.searchMembers(keyword);
-        model.addAttribute("member", searchResults);
-        return "memberList";
-    }
-
-    @PostMapping("/users/search")
-    public String searchUsers(@RequestParam String keyword, Model model) {
-        List<User> searchResults = userDetailsService.searchUsers(keyword);
-        model.addAttribute("user", searchResults);
-        return "users";
-    }
-
-    @PostMapping("/available_books/search")
-    public String searchBooks(@RequestParam String keyword, Model model){
-        List<Book> searchResults = service.searchBooks(keyword);
-        model.addAttribute("book", searchResults);
-        return "bookList";
-    }
-
-    @PostMapping("books/search")
-    public String searchBooksClient(@RequestParam String keyword, Model model){
-        List<Book> searchResults=service.searchBooks(keyword);
-        model.addAttribute("book",searchResults);
-        return "gallery";
-    }
-
-
-
 
 
     @PostMapping("/saveMember")
@@ -306,13 +279,12 @@ public class BookController {
         return new ModelAndView("BooksBorrowed","borrowedBooks",borrowedBooks);
     }
 
-    @GetMapping("/all_borrowed_books")
-    public ModelAndView DisplayAllBorrowedBooks(Model model){
-        List<BorrowedBook> borrowedBooks=borrowedBookService.displayAllBorrowedBooks();
-       // borrowedBooks = borrowedBooks.stream().filter(b -> !b.isReturned()).collect(Collectors.toList());
-
+    @RequestMapping("/all_borrowed_books")
+    public String  DisplayAllBorrowedBooks(Model model,@Param("keyword") String keyword){
+        List<BorrowedBook> borrowedBooks=borrowedBookService.listAll(keyword);
         model.addAttribute("borrowedBooks", borrowedBooks);
-        return  new ModelAndView("allBorrowedBooks","borrrowedBooks",borrowedBooks);
+        model.addAttribute("keyword", keyword);
+        return "allBorrowedBooks";
 
     }
 

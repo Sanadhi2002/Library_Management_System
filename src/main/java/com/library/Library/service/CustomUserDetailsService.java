@@ -1,10 +1,6 @@
 package com.library.Library.service;
 
-import ch.qos.logback.classic.util.LogbackMDCAdapter;
-import com.library.Library.entity.CustomUserDetails;
-import com.library.Library.entity.Member;
-import com.library.Library.entity.Role;
-import com.library.Library.entity.User;
+import com.library.Library.entity.*;
 import com.library.Library.repository.UserRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -12,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -66,9 +61,6 @@ public class CustomUserDetailsService implements UserDetailsService {
 
 
 
-    public List<User> searchUsers(String keyword) {
-        return userRepo.searchUsers(keyword);
-    }
 
 
     public String getCurrentUser(){
@@ -92,5 +84,12 @@ public class CustomUserDetailsService implements UserDetailsService {
             User user= userRepo.findUserByEmailWithRole(email);
             return user;
 
+    }
+
+    public List<User> listAll(String keyword) {
+        if (keyword != null) {
+            return userRepo.findByKeyword(keyword);
+        }
+        return userRepo.findAll();
     }
 }
