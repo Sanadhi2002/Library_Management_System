@@ -48,9 +48,9 @@
         <li class="py-2 lg:py-0 ">
           <a
                   class="text-black hover:pb-4 hover:border-b-4 hover:border-blue-600"
-                  href="/"
+                  href="books"
           >
-            Home
+            Gallery
           </a>
         </li>
         <li class="py-2 lg:py-0 ">
@@ -113,14 +113,7 @@
             Members
           </a>
         </li>
-        <li class="py-2 lg:py-0 ">
-          <a
-                  class="text-black hover:pb-4 hover:border-b-4 hover:border-blue-600"
-                  href="books"
-          >
-            Gallery
-          </a>
-        </li>
+
         <li class="py-2 lg:py-0 ">
           <a
                   class="text-black hover:pb-4 hover:border-b-4 hover:border-blue-600"
@@ -152,8 +145,10 @@
       <th scope="col">Book Name</th>
       <th scope="col">Author</th>
       <th scope="col">Date of Borrow</th>
+      <th scope="col">Due Date</th>
+      <th scope="col">Return Date</th>
       <th scope="col">Borrowed By</th>
-      <th scope="col">Status</th>
+      <th scope="col">Return Status</th>
 
     </tr>
     </thead>
@@ -162,6 +157,8 @@
       <td th:text="${borrowedBook.book.name}"></td>
       <td th:text="${borrowedBook.book.author}"></td>
       <td th:text="${#temporals.format(borrowedBook.borrowDate, 'yyyy-MM-dd')}"></td>
+      <td th:text="${#temporals.format(borrowedBook.dueDate, 'yyyy-MM-dd')}"></td>
+      <td th:text="${#temporals.format(borrowedBook.returnDate, 'yyyy-MM-dd')}"></td>
       <td th:text="${borrowedBook.user.email}"></td>
       <td th:text="${borrowedBook.isReturned()}"></td>
     </tr>

@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-public class BorrowedBook {
+public class BorrowedBook  implements  Charges{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY )
@@ -24,15 +24,37 @@ public class BorrowedBook {
     @Column(nullable = false)
     private LocalDate borrowDate;
 
+    @Column(nullable = false)
+    private LocalDate returnDate;
+
+    @Column(nullable = false)
+    private LocalDate dueDate;
+
+    @Column(nullable = false)
+    private  double fine;
+
+    @Column(nullable = false)
+    private  boolean fineIsPayed = false;
+
+
     @Column(nullable = false, columnDefinition = "boolean default false")
     private  boolean isReturned = false;
 
-    public BorrowedBook(User user, Book book, boolean isReturned) {
+    public BorrowedBook(User user, Book book, boolean isReturned, LocalDate borrowDate, LocalDate returnDate, LocalDate dueDate, double fine, boolean fineIsPayed) {
         this.user = user;
         this.book = book;
         this.borrowDate = LocalDate.now();
         this.isReturned = isReturned;
+        if (returnDate != null) {
+            this.returnDate = returnDate;
+        } else {
+            this.returnDate = LocalDate.now();
+        }
+        this.dueDate = getDueDate();
+        this.fine = fine;
+        this.fineIsPayed = fineIsPayed;
     }
+
 
     public BorrowedBook() {
         super();
@@ -77,5 +99,51 @@ public class BorrowedBook {
 
     public void setReturned(boolean returned) {
         isReturned = returned;
+    }
+
+    public LocalDate getReturnDate() {
+        return returnDate;
+    }
+
+    public void setReturnDate(LocalDate returnDate) {
+        this.returnDate = returnDate;
+    }
+
+    public LocalDate getDueDate() {
+        dueDate= borrowDate.plusDays(14);
+        return dueDate;
+    }
+
+    public void setDueDate(LocalDate dueDate) {
+        this.dueDate = dueDate;
+    }
+
+    public double getFine() {
+        return fine;
+    }
+
+    public void setFine(double fine) {
+        this.fine = fine;
+    }
+
+    public boolean isFineIsPayed() {
+        return fineIsPayed;
+    }
+
+    public void setFineIsPayed(boolean fineIsPayed) {
+        this.fineIsPayed = fineIsPayed;
+    }
+
+    @Override
+    public void calculateBill() {
+        if (LocalDate.now().isAfter(dueDate)) {
+            long days = LocalDate.now().toEpochDay() - dueDate.toEpochDay();
+            double fine = days * 100;
+            System.out.println("Fine for the book is: LKR " + fine);
+        } else {
+            this.fine = 0;
+            System.out.println("No fine for the book");
+        }
+
     }
 }

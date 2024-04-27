@@ -48,9 +48,9 @@
                 <li class="py-2 lg:py-0 ">
                     <a
                             class="text-black hover:pb-4 hover:border-b-4 hover:border-blue-600"
-                            href="/"
+                            href="books"
                     >
-                        Home
+                        Gallery
                     </a>
                 </li>
                 <li class="py-2 lg:py-0 ">
@@ -113,14 +113,7 @@
                         Members
                     </a>
                 </li>
-                <li class="py-2 lg:py-0 ">
-                    <a
-                            class="text-black hover:pb-4 hover:border-b-4 hover:border-blue-600"
-                            href="books"
-                    >
-                        Gallery
-                    </a>
-                </li>
+
                 <li class="py-2 lg:py-0 ">
                     <a
                             class="text-black hover:pb-4 hover:border-b-4 hover:border-blue-600"
@@ -143,6 +136,8 @@
             <th scope="col"></th>
             <th scope="col">Author</th>
             <th scope="col">Date of Borrow</th>
+            <th scope="col">Due Date </th>
+            <th scope="col">Charges</th>
             <th scope="col">Action</th>
         </tr>
         </thead>
@@ -155,6 +150,8 @@
             </td>
             <td th:text="${borrowedBook.book.author}"></td>
             <td th:text="${#temporals.format(borrowedBook.borrowDate, 'yyyy-MM-dd')}"></td>
+            <td th:text="${#temporals.format(borrowedBook.dueDate, 'yyyy-MM-dd')}"></td>
+            <td th:text="${borrowedBook.fine}"></td><td>
             <td>
                 <form method="post" th:action="@{/returnBook/{id}(id=${borrowedBook.id})}">
                     <button type="submit" class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Return</button>

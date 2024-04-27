@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.Base64;
 import java.util.stream.Collectors;
 import com.library.Library.repository.UserRepository;
@@ -255,7 +256,7 @@ public class BookController {
             b.setCount(b.getCount() - 1);
             service.save(b);
             User currentUser = userDetailsService.getCurrentUserEntity();
-            BorrowedBook borrowedBook = new BorrowedBook(currentUser, b, false);
+            BorrowedBook borrowedBook = new BorrowedBook(currentUser, b, false, null, null, null, 0, false);
             borrowedBookService.save(borrowedBook);
 
         }else{
@@ -296,6 +297,7 @@ public class BookController {
             book.setCount(book.getCount()+1);
             service.save(book);
             borrowedBook.setReturned(true);
+            borrowedBook.setReturnDate(LocalDate.now());
             borrowedBookService.save(borrowedBook);
             //borrowedBookService.delete(borrowedBook);
 
