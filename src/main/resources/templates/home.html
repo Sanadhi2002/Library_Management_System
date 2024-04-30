@@ -1,70 +1,201 @@
 <!doctype html>
 <html lang="en" xmlns:th="https://www.thymeleaf.com">
 <head>
-    <!-- Required meta tags -->
     <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css" />
     <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
     <script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+    <script
+            src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js"
+            defer
+    ></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
     <title>Libra</title>
     <style>
-        #menu-toggle:checked + #menu {
-            display: block;
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:"Poppins",sans-serif;
+
+
         }
+
+        section{
+            position:relative;
+            width:100%;
+            min-height:100vh;
+            display:flex;
+            flex-direction:column;
+            justify-content:flex-start;
+            background-image:url("/images/spaceman.jpg");
+            background-size:cover;
+            background-position:center;
+        }
+
+        header{
+            position:relative;
+            top:0;
+            width:100%;
+            padding:10px 100px;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo{
+            position: relative;
+            font-soze:10px;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-weight:300;
+            letter-spacing: 1px;
+            color:#000;
+            height: 25px;
+            width:25px;
+
+        }
+
+
+        .content{
+            max-width:650px;
+            margin:60px 100px;
+        }
+
+        .content .info h2{
+            color:#226A80;
+            font-size:55px;
+            text-transform: uppercase;
+            font-weight:800;
+            line-height:60px;
+            letter-spacing: 2px;
+            margin-bottom: 30px;
+        }
+
+        .content .info h2 span{
+            color:#fff;
+            font-size:55px;
+            font-weight:600;
+        }
+        .content .info p{
+
+            font-size:16px;
+            font-weight:500;
+            margin-bottom: 40px;
+        }
+        .content .info-btn{
+            color:#fff;
+            background: #226A80;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-weight:750;
+            letter-spacing: 2px;
+            padding:10px 20px;
+            border-radius:5px;
+            transition: 0.3s;
+            transition-property: background;
+
+
+        }
+
+        .content .info-btn:hover{
+            background: #0C4F60;
+        }
+
+        label{
+            display: none;
+
+        }
+
+        #check{
+            z-index: 3;
+            display: none;
+        }
+
+        @media(max-width:960px){
+
+            label{
+                display: block;
+                font-size:25px;
+                cursor:pointer;
+                transition:0.3s;
+                transition-property: color;
+
+            }
+
+            label:hover{
+                color:#fff;
+
+            }
+
+
+            header .logo{
+                position: absolute;
+                bottom: -6px;
+                height: 25px;
+                width:25px;
+
+
+            }
+
+            .content .info h2{
+                font-size:45px;
+                line-height:50px;
+            }
+
+            .content .info h2 span{
+                font-size:40px;
+                font-weight: 600;
+            }
+
+            .content .info p{
+                font-size:14px;
+            }
+        }
+
+        @media(max-width:560px){
+            .content .info h2{
+                font-size:35px;
+                line-height:40px;
+            }
+
+            .content .info h2 span{
+                font-size:30px;
+                font-weight: 600;
+            }
+
+            .content .info p{
+                font-size:14px;
+            }
+        }
+
+
     </style>
 </head>
-<body>
-<div class="bg-white" >
+<body >
+<section>
+    <input type="checkbox" id="check">
+    <header>
+        <h2><a href="#" class="logo"><img src="images/logo.jpg" class="h-10 w-10"></a> </h2>
+    </header>
+    <div class="content">
+        <div class="info">
+            <h2>Welcome to<br><span>LIBRA</span></h2>
+            <a th:href="register" class="info-btn"> Register</a>
+            <a th:href="login"  class="info-btn">Login</a>
 
 
-<div class="relative isolate px-6 pt-14 lg:px-8">
-        <div class="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80" aria-hidden="true">
-            <div class="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]" style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"></div>
-        </div>
-        <div class="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
 
-            <div class="text-center">
-                <h1 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">Library Management System</h1>
-                <div class="mt-10 flex items-center justify-center gap-x-6">
-                    <a th:href="register" class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Register</a>
-                    <a th:href="login" class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Login</a>
-                </div>
-            </div>
-        </div>
-        <div class="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]" aria-hidden="true">
-            <div class="relative left-[calc(50%+3rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%+36rem)] sm:w-[72.1875rem]" style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"></div>
         </div>
     </div>
-</div>
+</section>
 
-<!--
-<div >
-    <h1>Welcome to the ZEBRA !</h1>
-
-
-    <h3>
-        <button type="button" class="btn btn-outline-success align-content-center" > <a th:href="register">Register</a></button>
-
-    </h3>
-    <h3>
-        <button type="button" class="btn btn-outline-success align-content-center"><a th:href="login">Login</a></button>
-
-    </h3>
-
-</div>
--->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
-<script
-        src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js"
-        defer
-></script>
 </body>
 </html>

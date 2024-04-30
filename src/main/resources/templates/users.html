@@ -8,6 +8,7 @@
     <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
     <title>Libra</title>
     <style>
         #menu-toggle:checked + #menu {
@@ -69,41 +70,23 @@
                         Borrowals
                     </a>
                 </li>
-                <li x-data="{ dropdownOpen: false }" class="py-2 lg:py-0 ">
+
+                <li class="py-2 lg:py-0 ">
                     <a
                             class="text-black hover:pb-4 hover:border-b-4 hover:border-blue-600"
-                            href="#" @click="dropdownOpen = !dropdownOpen"
+                            href="register"
                     >
-                        Register
+                        New Member
                     </a>
-                    <div
-                            x-show="dropdownOpen"
-                            @click="dropdownOpen = false"
-                            class=" inset-0  w-full"
-                    ></div>
+                </li>
 
-                    <div
-                            x-show="dropdownOpen"
-                            class="absolute  mt-2 py-2 w-48 bg-white rounded-md shadow-xl z-20"
+                <li class="py-2 lg:py-0 ">
+                    <a
+                            class="text-black hover:pb-4 hover:border-b-4 hover:border-blue-600"
+                            href="book_register"
                     >
-
-
-                        <a
-                                href="register"
-                                class="text-black "
-                        >
-                            Register a member
-                        </a>
-
-                        <a
-                                href="book_register"
-                                class="text-black "
-                        >
-                            Register a book
-                        </a>
-
-
-                    </div>
+                        New Book
+                    </a>
                 </li>
                 <li class="py-2 lg:py-0 ">
                     <a
@@ -113,6 +96,7 @@
                         Members
                     </a>
                 </li>
+
                 <li class="py-2 lg:py-0 ">
                     <a
                             class="text-black hover:pb-4 hover:border-b-4 hover:border-blue-600"
@@ -130,10 +114,11 @@
 <div class="container text-center mt-20">
     <div>
         <form th:action="@{/users}" class="flex flex-row mb-5 ">
-            <input type="text" name="keyword" id="keyword" size="50" th:value="${keyword}" class="border border-2 border-black pl-2" required />
+            <input type="text" name="keyword" id="keyword" size="50" th:value="${keyword}" class="border-dark border rounded pt-2 pb-2 pl-2 pr-2" required />
             &nbsp;
-            <input type="submit" value="Search" />
-            &nbsp;
+            <button  type="submit">
+                <span  class="material-symbols-outlined">search</span>
+            </button>
             <input type="button" value="Clear" id="btnClear" onclick="clearSearch()" />
         </form>
         <table class="table table-success table-striped">
