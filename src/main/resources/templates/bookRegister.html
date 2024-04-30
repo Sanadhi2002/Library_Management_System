@@ -53,7 +53,7 @@
                         Gallery
                     </a>
                 </li>
-                <li class="py-2 lg:py-0 ">
+                <li class="py-2 lg:py-0 " th:if="${role_id== 1}">
                     <a
                             class="text-black hover:pb-4 hover:border-b-4 hover:border-blue-600"
                             href="available_books"
@@ -61,7 +61,7 @@
                         Available books
                     </a>
                 </li>
-                <li class="py-2 lg:py-0 ">
+                <li class="py-2 lg:py-0 " th:if="${role_id== 1}">
                     <a
                             class="text-black hover:pb-4 hover:border-b-4 hover:border-blue-600"
                             href="all_borrowed_books"
@@ -70,7 +70,7 @@
                     </a>
                 </li>
 
-                <li class="py-2 lg:py-0 ">
+                <li class="py-2 lg:py-0 " th:if="${role_id== 1}">
                     <a
                             class="text-black hover:pb-4 hover:border-b-4 hover:border-blue-600"
                             href="register"
@@ -79,7 +79,7 @@
                     </a>
                 </li>
 
-                <li class="py-2 lg:py-0 ">
+                <li class="py-2 lg:py-0 " th:if="${role_id== 1}">
                     <a
                             class="text-black hover:pb-4 hover:border-b-4 hover:border-blue-600"
                             href="book_register"
@@ -87,7 +87,7 @@
                         New Book
                     </a>
                 </li>
-                <li class="py-2 lg:py-0 ">
+                <li class="py-2 lg:py-0 " th:if="${role_id== 1}">
                     <a
                             class="text-black hover:pb-4 hover:border-b-4 hover:border-blue-600"
                             href="users"
@@ -125,16 +125,16 @@
 
         <div class="mb-3">
             <label for="price" class="form-label">Price</label>
-            <input type="text" class="form-control" id="price" name="price">
+            <input type="text" class="form-control" id="price" name="price"  step="0.01" min="0" >
         </div>
         <div class="mb-3">
             <label for="count" class="form-label">Count</label>
-            <input type="text" class="form-control" id="count" name="count">
+            <input type="text" class="form-control" id="count" name="count"  pattern="[0-9]{2,10}" >
         </div>
 
         <div class="mb-3">
             <label for="image" class="form-label">Book Image</label>
-            <input type="file" class="form-control" id="image" name="image">
+            <input type="file" class="form-control" id="image" name="image" required>
         </div>
         <button type="submit" class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Submit</button>
     </form>

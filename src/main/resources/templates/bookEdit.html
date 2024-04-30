@@ -34,15 +34,15 @@
 
         <div class="mb-3">
             <label for="price" class="form-label">Price</label>
-            <input type="text" class="form-control" id="price" name="price"  th:value="${book.price}">
+            <input type="text" class="form-control" id="price" name="price"  th:value="${book.price}"   step="0.01" min="0">
         </div>
         <div class="mb-3">
             <label for="count" class="form-label">Count</label>
-            <input type="text" class="form-control" id="count" name="count"  th:value="${book.count}">
+            <input type="text" class="form-control" id="count" name="count"  th:value="${book.count}" pattern="[0-9]{2,10}" >
         </div>
         <div class="mb-3">
             <label for="image" class="form-label">Book Image</label>
-            <input type="file" class="form-control" id="image" name="image" th:value="${book.imageURL}">
+            <input type="file" class="form-control" id="image" name="image" th:value="${book.imageURL}" required>
         </div>
 
 

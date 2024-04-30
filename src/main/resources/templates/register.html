@@ -55,7 +55,7 @@
                         Gallery
                     </a>
                 </li>
-                <li class="py-2 lg:py-0 ">
+                <li class="py-2 lg:py-0 " th:if="${role_id== 1}">
                     <a
                             class="text-black hover:pb-4 hover:border-b-4 hover:border-blue-600"
                             href="available_books"
@@ -63,7 +63,7 @@
                         Available books
                     </a>
                 </li>
-                <li class="py-2 lg:py-0 ">
+                <li class="py-2 lg:py-0 " th:if="${role_id== 1}">
                     <a
                             class="text-black hover:pb-4 hover:border-b-4 hover:border-blue-600"
                             href="all_borrowed_books"
@@ -72,7 +72,7 @@
                     </a>
                 </li>
 
-                <li class="py-2 lg:py-0 ">
+                <li class="py-2 lg:py-0 " th:if="${role_id== 1}" >
                     <a
                             class="text-black hover:pb-4 hover:border-b-4 hover:border-blue-600"
                             href="register"
@@ -81,7 +81,7 @@
                     </a>
                 </li>
 
-                <li class="py-2 lg:py-0 ">
+                <li class="py-2 lg:py-0 " th:if="${role_id== 1}">
                     <a
                             class="text-black hover:pb-4 hover:border-b-4 hover:border-blue-600"
                             href="book_register"
@@ -89,7 +89,7 @@
                         New Book
                     </a>
                 </li>
-                <li class="py-2 lg:py-0 ">
+                <li class="py-2 lg:py-0 " th:if="${role_id== 1}">
                     <a
                             class="text-black hover:pb-4 hover:border-b-4 hover:border-blue-600"
                             href="users"
@@ -151,7 +151,7 @@
                 <label class="col-4 col-form-label">Phone: </label>
                 <div class="col-8">
                     <input type="text" th:field="*{phone}" class="form-control"
-                           required minlength="2" maxlength="10" />
+                           required minlength="2" maxlength="10"   pattern="[0-9]{2,10}"/>
                 </div>
             </div>
 
