@@ -36,6 +36,8 @@ public class BookController {
     private MemberService memberService;
 
     @Autowired
+    private CategoryService categoryService;
+    @Autowired
     private UserRepository userRepository;
 
     @Autowired
@@ -50,6 +52,40 @@ public class BookController {
     public String home(){
         return "home";
     }
+
+    @GetMapping("/categories")
+    public String categories(Model model){
+
+        List<Category> listCategories=categoryService.getAllCategories();
+        model.addAttribute("listCategories",listCategories);
+        return "categories";
+    }
+    @RequestMapping("/available_categories")
+    public String  getCategories(Model model){
+        List<Category> listCategories=categoryService.getAllCategories();
+        model.addAttribute("listCategories",listCategories);
+        return "categories";
+
+    }
+    @PostMapping("/saveCategory" )
+    public  String addCategory(Category category){
+        categoryService.save(category);
+        return "redirect:/categories";
+
+    }
+    @RequestMapping("/editCategory/{id}")
+    public String editCategory(@PathVariable("id") int id, Model model){
+        Category category=categoryService.getCategoryById(id);
+        model.addAttribute("category",category);
+        return "EditCategory";
+    }
+    @RequestMapping("/deleteCategory/{id}")
+    public String deleteCategory(@PathVariable("id") int id){
+        categoryService.deleteById(id);
+        return "redirect:/categories";
+    }
+
+
 
     @GetMapping("/register")
     public String register(Model model){
@@ -102,6 +138,10 @@ public class BookController {
     @RequestMapping("/available_books")
     public String getAllBook(Model model, @Param("keyword") String keyword){
         List<Book> list=service.listAll(keyword);
+
+        List<Category> listCategories=categoryService.getAllCategories();
+        model.addAttribute("listCategories",listCategories);
+
         model.addAttribute("book",list);
         model.addAttribute("keyword", keyword);
 
@@ -118,19 +158,28 @@ public class BookController {
 
 
     @GetMapping("/book_register")
-    public String bookRegister(){
+    public String bookRegister(Model model){
+        List<Category> listCategories = categoryService.getAllCategories();
+        model.addAttribute("listCategories", listCategories);
+
         return "bookRegister";
     }
 
+
+
+
     @PostMapping("/save")
-    public String addBook(@ModelAttribute Book b, @RequestParam("image") MultipartFile imageFile) {
+    public String addBook(@ModelAttribute Book b, @RequestParam("image") MultipartFile imageFile, @RequestParam("category_id")int category_id,Model model) {
         try {
             String imagePath = "/" + imageFile.getOriginalFilename();
             Files.write(Paths.get(imagePath), imageFile.getBytes());
 
-
             b.setImageURL(imagePath);
+            List<Category> listCategories=categoryService.getAllCategories();
+            model.addAttribute("listCategories",listCategories);
 
+            Category category= categoryService.getCategoryById(category_id);
+            b.setCategory(category);
 
             service.save(b);
 
@@ -174,6 +223,9 @@ public class BookController {
     public String editBook(@PathVariable("id") int id, Model model){
         Book b =service.getBookById(id);
         model.addAttribute("book",b);
+
+        List<Category> listCategories=categoryService.getAllCategories();
+        model.addAttribute("listCategories",listCategories);
         return "bookEdit";
     }
 

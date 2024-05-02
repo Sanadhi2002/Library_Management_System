@@ -25,6 +25,10 @@ public class Book {
    @Column(name = "image_URL")
    private  String imageURL;
 
+    @ManyToOne
+    @JoinColumn(name = "category_id",  referencedColumnName = "id")
+    private Category category;
+
 
 
     public Book(int id, String name, String author, String price, int count,List<BorrowedBook> borrowedBooks, String imageURL) {
@@ -37,6 +41,9 @@ public class Book {
         this.borrowedBooks = borrowedBooks;
         this.imageURL= imageURL;
 
+        Category defaultCategory = new Category();
+        defaultCategory.setId(1);
+        this.category = defaultCategory;
 
     }
 
@@ -101,4 +108,11 @@ public class Book {
     }
 
 
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
 }
