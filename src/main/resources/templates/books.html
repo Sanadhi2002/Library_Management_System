@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en" xmlns:th="https://www.thymeleaf.com" xmlns="http://www.w3.org/1999/html">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300..700;1,300..700&display=swap" rel="stylesheet">
+  <title>Libra</title>
+  <style>
+    *{
+      font-family: "Cormorant", serif;
+      font-optical-sizing: auto;
+      font-weight: 700;
+      font-style: normal;
+    }
+    #menu-toggle:checked + #menu {
+      display: block;
+    }
+    .container{
+      width: 100%;
+
+    }
+    .button-container{
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+
+    }
+    .middle-container{
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      margin: 10px;
+      padding: 10px;
+      gap:3px;
+
+
+
+    }
+    .list{
+      display: flex;
+      flex-direction: column;
+      column-gap: 10px;
+      border-radius: 2%;
+      box-shadow: #c28c90;
+      margin: 15px;
+    }
+    .borrow-btn{
+      background-color: #d9b0b6;
+      border-radius: 10px;
+      align-items: center;
+      padding: 10px;
+      color: #000;
+      width: 100%;
+
+    }
+
+    .card img{
+      padding-left: 20px;
+      padding-right: 20px;
+     padding-top:10px;
+
+      border-radius: inherit;
+
+    }
+
+
+    .search-bar{
+      display: flex;
+      flex-direction: row;
+        justify-content: end;
+      margin-bottom: 4px;
+
+    }
+  </style>
+</head>
+<body>
+<div th:replace="fragments/navbar :: navbar"></div>
+<div class="container mt-20">
+
+<!--  Search form-->
+  <form th:action="@{/books}" class="search-bar">
+    <input type="text" name="keyword" id="keyword" size="50" th:value="${keyword}" class="absolute border-dark border rounded-pill w-100 pt-2 pb-2 pl-2 pr-2" required>
+    <button  type="submit" class="relative">
+      <img  src="/images/search.svg" class="h-auto w-9 px-2 py-2">
+    </button>
+    </input>
+  </form>
+
+  <div class="middle-container">
+    <div th:each="b : ${listBooks}" class="list">
+      <div class="card" style="width: 18rem; "  >
+
+        <div class="rounded-8 m-0">
+          <img  th:src="${b.imageUrl}"  alt="book cover" style="height: 16rem">
+
+        </div>
+        <div class="card-body">
+          <h3 class="card-title font-bold" th:text="${b.name}"></h3>
+          <p >By:
+          <h5 class="card-title" th:text="${b.author}"></h5>
+          </p>
+          <form class="button-container" method="post" th:action="@{/borrowBook/{id}(id=${b.id})}">
+            <button type="submit" class=" borrow-btn">Borrow</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+<script
+        src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js"
+        defer
+></script>
+<script type="text/javascript">
+  function clearSearch() {
+    window.location = "[[@{/books}]]";
+  }
+</script>
+</body>
+</html>

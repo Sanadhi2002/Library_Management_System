@@ -82,7 +82,7 @@
                 <li class="py-2 lg:py-0 " >
                     <a
                             class="text-black hover:pb-4 hover:border-b-4 hover:border-blue-600"
-                            href="book_register"
+                            href="books"
                     >
                         New Book
                     </a>
@@ -112,8 +112,9 @@
 </nav>
 
 <div class="container mt-20">
-    <form enctype="multipart/form-data" class="col-md-4 offset-md-4" th:action="@{/save}"  method="post">
-        <div class="mb-3">
+    <form th:action="@{/book_register}" th:object="${book}" method="POST" enctype="multipart/form-data">
+
+    <div class="mb-3">
             <label for="name" class="form-label">Name</label>
             <input type="text" class="form-control" id="name" name="name">
         </div>
@@ -133,18 +134,20 @@
         </div>
 
         <div class="mb-3">
-            <label for="image" class="form-label">Book Image</label>
-            <input type="file" class="form-control" id="image" name="image" required>
-        </div>
-
-        <div class="mb-3">
             <label for="category" class="form-label">Category</label>
-            <select class="form-control" id="category" name="category_id">
+            <select class="form-control" id="category" name="category.id" required>
                 <option value="">Select Category</option>
-                <option th:each="category : ${listCategories}" th:value="${category.id}" th:text="${category.category_name}"></option>
+                <option th:each="category : ${categories}"
+                        th:value="${category.id}"
+                        th:text="${category.category_name}">
+                </option>
             </select>
         </div>
 
+        <div class="form-group">
+            <label for="image">Image</label>
+            <input type="file" id="image" name="image" class="form-control" accept="image/*" required>
+        </div>
 
         <button type="submit" class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Submit</button>
     </form>

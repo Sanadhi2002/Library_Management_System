@@ -4,19 +4,18 @@ package com.library.Library.controller;
 import com.library.Library.entity.*;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
-import java.util.Base64;
-import java.util.stream.Collectors;
+
 import com.library.Library.repository.UserRepository;
 import com.library.Library.service.*;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.repository.query.Param;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
+import java.util.UUID;
 
 @Controller
 public class BookController {
@@ -31,12 +31,13 @@ public class BookController {
     @Autowired
     private BookService service;
 
+    @Autowired
+    private CategoryService categoryService;
 
     @Autowired
     private MemberService memberService;
 
-    @Autowired
-    private CategoryService categoryService;
+
     @Autowired
     private UserRepository userRepository;
 
@@ -45,12 +46,16 @@ public class BookController {
 
     @Autowired
     private BorrowedBookService borrowedBookService;
+
     @PersistenceContext
     private EntityManager entityManager;
 
-    @GetMapping("/")
-    public String home(){
-        return "home";
+    @Value("${file.upload-dir}")
+    private String uploadDir;
+
+    @GetMapping("/fragments")
+    public String fragments(){
+        return "navbar.html";
     }
 
     @GetMapping("/categories")
@@ -60,192 +65,123 @@ public class BookController {
         model.addAttribute("listCategories",listCategories);
         return "categories";
     }
-    @RequestMapping("/available_categories")
-    public String  getCategories(Model model){
-        List<Category> listCategories=categoryService.getAllCategories();
-        model.addAttribute("listCategories",listCategories);
-        return "categories";
 
-    }
-    @PostMapping("/saveCategory" )
-    public  String addCategory(Category category){
-        categoryService.save(category);
-        return "redirect:/categories";
 
-    }
-    @RequestMapping("/editCategory/{id}")
-    public String editCategory(@PathVariable("id") int id, Model model){
-        Category category=categoryService.getCategoryById(id);
-        model.addAttribute("category",category);
-        return "EditCategory";
-    }
-    @RequestMapping("/deleteCategory/{id}")
-    public String deleteCategory(@PathVariable("id") int id){
-        categoryService.deleteById(id);
-        return "redirect:/categories";
+    @GetMapping("/books")
+    public ModelAndView listBooks(Model model, @Param("keyword") String keyword) {
+        List<Book> listBooks = service.getAllBook();
+        model.addAttribute("listBooks", listBooks);
+        model.addAttribute("keyword", keyword);
+        return new ModelAndView("books", "listBooks", listBooks);
     }
 
-
-
-    @GetMapping("/register")
-    public String register(Model model){
-        model.addAttribute("user", new User());
-        return "register";
-    }
-
-    @PostMapping("/process_register")
-    public  String processRegister(User user){
-
-        Role defaultRole = entityManager.find(Role.class, 2);
-
-        // Check if the role with ID 2 exists
-        if (defaultRole == null) {
-            // Handle the case where the role with ID 2 does not exist
-            return "register";
+    @GetMapping("/available_books")
+    public String listAvailableBooks(Model model, @Param("keyword") String keyword) {
+        List<Book> listBooks;
+        if (keyword != null && !keyword.isEmpty()) {
+            listBooks = service.listAll(keyword);
+        } else {
+            listBooks = service.getAllBook();
         }
-
-        // Set the default role for the user
-        user.setRole(defaultRole);
-
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String encodedPassword = passwordEncoder.encode(user.getPassword());
-        user.setPassword(encodedPassword);
-
-        userRepository.save(user);
-        return "register_success";
-    }
-
-    @PostMapping("/saveUser")
-    public  String addUser( User user){
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String encodedPassword = passwordEncoder.encode(user.getPassword());
-        user.setPassword(encodedPassword);
-
-        userRepository.save(user);
-        return  "redirect:/users";
-    }
-    @GetMapping("/login")
-    public String login(){
-        return "login";
-    }
-    @RequestMapping("/users")
-    public String listUsers(Model model,@Param("keyword") String keyword){
-        List<User> listUsers =userDetailsService.listAll(keyword);
-        model.addAttribute("listUsers", listUsers);
+        model.addAttribute("listBooks", listBooks);
         model.addAttribute("keyword", keyword);
-        return "users";
-    }
-    @RequestMapping("/available_books")
-    public String getAllBook(Model model, @Param("keyword") String keyword){
-        List<Book> list=service.listAll(keyword);
-
-        List<Category> listCategories=categoryService.getAllCategories();
-        model.addAttribute("listCategories",listCategories);
-
-        model.addAttribute("book",list);
-        model.addAttribute("keyword", keyword);
-
         return "bookList";
     }
 
 
 
-
-    @GetMapping("/new_member")
-    public String memberRegister(){
-        return "memberRegister";
-    }
-
-
-    @GetMapping("/book_register")
-    public String bookRegister(Model model){
-        List<Category> listCategories = categoryService.getAllCategories();
-        model.addAttribute("listCategories", listCategories);
-
+    @GetMapping("/bookRegister")
+    public String getBooks(Model model) {
+        Book book = new Book();
+        List<Category> categories = categoryService.getAllCategories();
+        model.addAttribute("book", book);
+        model.addAttribute("categories", categories);
         return "bookRegister";
     }
 
+    @PostMapping("/book_register")
+    public String registerBook(@ModelAttribute Book book, @RequestParam("image") MultipartFile imageFile) throws IOException {
+        // Handle the image file upload
+        if (!imageFile.isEmpty()) {
+            // Create uploads directory if it doesn't exist
+            Path uploadPath = Path.of(uploadDir);
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+            }
 
+            // Generate unique filename to prevent overwrites
+            String originalFilename = imageFile.getOriginalFilename();
+            String fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
+            String uniqueFilename = UUID.randomUUID().toString() + fileExtension;
 
+            // Save the file
+            Path filePath = uploadPath.resolve(uniqueFilename);
+            Files.copy(imageFile.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
 
-    @PostMapping("/save")
-    public String addBook(@ModelAttribute Book b, @RequestParam("image") MultipartFile imageFile, @RequestParam("category_id")int category_id,Model model) {
-        try {
-            String imagePath = "/" + imageFile.getOriginalFilename();
-            Files.write(Paths.get(imagePath), imageFile.getBytes());
-
-            b.setImageURL(imagePath);
-            List<Category> listCategories=categoryService.getAllCategories();
-            model.addAttribute("listCategories",listCategories);
-
-            Category category= categoryService.getCategoryById(category_id);
-            b.setCategory(category);
-
-            service.save(b);
-
-            return "redirect:/available_books";
-        } catch (IOException e) {
-
-            e.printStackTrace();
-            return "error";
+// Save the relative path in the database
+            book.setImageUrl("/uploads/" + uniqueFilename);
         }
-    }
 
-    @RequestMapping("/books")
-    public String  getBooks(Model model, @Param("keyword") String keyword){
-        List<Book> list=service.listAll(keyword);
-        List<Book> availableBooks = list.stream()
-                .filter(book -> book.getCount() > 0)
-                .collect(Collectors.toList());
+        // Ensure category is properly set
+        if (book.getCategory() != null && book.getCategory().getId() > 0) {
+            Category category = categoryService.getCategoryById(book.getCategory().getId());
+            if (category != null) {
+                book.setCategory(category);
+            }
+        }
 
-        model.addAttribute("book",availableBooks);
-        model.addAttribute("keyword", keyword);
-        return "gallery";
-
-    }
-
-    @GetMapping("/members")
-    public ModelAndView getAllMembers(){
-        List<Member> memberList=memberService.getAllMembers();
-        return  new ModelAndView("memberList","member",memberList);
-    }
-
-
-    @PostMapping("/saveMember")
-    public  String addMember(@ModelAttribute Member member){
-        memberService.saveMember(member);
-        return  "redirect:/new_member";
+        // Save the book
+        service.save(book);
+        return "redirect:/books";
     }
 
 
 
     @RequestMapping("/editBook/{id}")
     public String editBook(@PathVariable("id") int id, Model model){
-        Book b =service.getBookById(id);
-        model.addAttribute("book",b);
+        Book book =service.getBookById(id);
+        model.addAttribute("book",book);
 
         List<Category> listCategories=categoryService.getAllCategories();
         model.addAttribute("listCategories",listCategories);
         return "bookEdit";
     }
 
-    @RequestMapping("/editMember/{id}")
-    public String editMember(@PathVariable("id") int id, Model model){
-        Member m=memberService.getMemberById(id);
+    @PostMapping("/updateBook")
+    public String updateBook(@ModelAttribute Book book, @RequestParam("image") MultipartFile imageFile) throws IOException {
+        // Handle the image file upload
+        if (!imageFile.isEmpty()) {
+            // Create uploads directory if it doesn't exist
+            Path uploadPath = Path.of(uploadDir);
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+            }
 
-        model.addAttribute("member",m);
-        return "memberEdit";
+            // Generate unique filename to prevent overwrites
+            String originalFilename = imageFile.getOriginalFilename();
+            String fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
+            String uniqueFilename = UUID.randomUUID().toString() + fileExtension;
+
+            // Save the file
+            Path filePath = uploadPath.resolve(uniqueFilename);
+            Files.copy(imageFile.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
+            // Save the relative path in the database
+            book.setImageUrl("/uploads/" + uniqueFilename);
+        }
+
+        // Ensure category is properly set
+        if (book.getCategory() != null && book.getCategory().getId() > 0) {
+            Category category = categoryService.getCategoryById(book.getCategory().getId());
+            if (category != null) {
+                book.setCategory(category);
+            }
+        }
+
+        // Save the book
+        service.save(book);
+        return "redirect:/books";
     }
-
-    @RequestMapping("/editUser/{id}")
-    public String editUser(@PathVariable("id") int id, Model model){
-        User u = userDetailsService.getUserById(id);
-
-
-        model.addAttribute("user",u);
-        return "userEdit";
-    }
-
 
     @RequestMapping("/deleteBook/{id}")
     public String deleteBook(@PathVariable("id") int id){
@@ -254,52 +190,6 @@ public class BookController {
         return "redirect:/available_books";
     }
 
-    @RequestMapping("/deleteMember/{id}")
-    public String deleteMember(@PathVariable("id")int id){
-        memberService.deleteById(id);
-        return "redirect:/new_member";
-    }
-
-    @RequestMapping("/deleteUser/{id}")
-    public String deleteUser(@PathVariable("id")int id){
-        userDetailsService.deleteById(id);
-        return "redirect:/new_member";
-    }
-
-    @GetMapping("/logout")
-    public String logout(Model model){
-
-        String userEmail = userDetailsService.getCurrentUser();
-
-        if (userEmail != null) {
-            model.addAttribute("userEmail", userEmail);
-            return  userDetailsService.LogoutUser();
-        } else {
-            // Handle the case where the user is not authenticated
-            return "redirect:/home"; // Redirect to the login page or another appropriate action
-        }
-
-    }
-
-    @RequestMapping("/profile")
-    public String getProfilePage(){
-
-        return "profile";
-    }
-    @GetMapping("/profile")
-    public String userProfile(Model model){
-        String userEmail = userDetailsService.getCurrentUser();
-
-        if (userEmail != null) {
-            model.addAttribute("userEmail", userEmail);
-            return "profile";
-        } else {
-            // Handle the case where the user is not authenticated
-            return "redirect:/"; // Redirect to the login page or another appropriate action
-        }
-
-
-    }
 
     @PostMapping("/borrowBook/{id}")
     public String borrowBook(@PathVariable("id") int id){

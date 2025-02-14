@@ -52,4 +52,8 @@ public class Category {
     public void setBooks(Set<Book> books) {
         this.books = books;
     }
+
+    public Category get() {
+        return this;
+    }
 }

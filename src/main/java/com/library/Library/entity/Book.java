@@ -12,26 +12,23 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private  String name;
-
     private int count;
     private  String author;
     private  String price;
 
-
-
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
     private List<BorrowedBook> borrowedBooks;
 
-   @Column(name = "image_URL")
-   private  String imageURL;
+    @Column(name = "image_url")
+    private String imageUrl;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id",  referencedColumnName = "id")
     private Category category;
 
 
 
-    public Book(int id, String name, String author, String price, int count,List<BorrowedBook> borrowedBooks, String imageURL) {
+    public Book(int id, String name, String author, String price, int count,List<BorrowedBook> borrowedBooks,String imageUrl) {
         super();
         this.id = id;
         this.name = name;
@@ -39,13 +36,14 @@ public class Book {
         this.price = price;
         this.count=count;
         this.borrowedBooks = borrowedBooks;
-        this.imageURL= imageURL;
-
+        this.imageUrl = imageUrl;
         Category defaultCategory = new Category();
         defaultCategory.setId(1);
         this.category = defaultCategory;
 
     }
+
+
 
     public Book(){
         super();
@@ -99,20 +97,19 @@ public class Book {
         this.borrowedBooks = borrowedBooks;
     }
 
-    public String getImageURL() {
-        return imageURL;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public void setImageURL(String imageURL) {
-        this.imageURL = imageURL;
-    }
-
-
-    public Category getCategory() {
-        return category;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public Category getCategory() {
+        return category;
     }
 }

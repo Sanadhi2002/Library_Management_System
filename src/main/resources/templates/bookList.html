@@ -8,122 +8,44 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300..700;1,300..700&display=swap" rel="stylesheet">
     <title>Libra</title>
     <style>
+        *{
+            font-family: "Cormorant", serif;
+            font-optical-sizing: auto;
+            font-weight: 700;
+            font-style: normal;
+        }
         #menu-toggle:checked + #menu {
             display: block;
         }
+        .container{
+            width: 100%;
+            margin: 0;
+
+        }
+
     </style>
 </head>
 <body>
-<nav class="lg:px-16 px-6 bg-white shadow-md flex flex-wrap items-center lg:py-0 py-2">
-    <div class="flex-1 flex justify-between items-center">
-        <a href="#" class="flex text-lg font-semibold">
-            <img
-                    src="/images/logo.jpg"
-                    width="50"
-                    height="50"
-                    class="p-2"
-                    alt="Rz Codes Logo"
-            />
-            <div class="mt-3 text-black">Libra</div>
-        </a>
-    </div>
-    <label for="menu-toggle" class="cursor-pointer lg:hidden block">
-        <svg
-                class="fill-current text-gray-900"
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 20 20"
-        >
-            <title>menu</title>
-            <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"></path>
-        </svg>
-    </label>
-    <input class="hidden" type="checkbox" id="menu-toggle" />
-    <div class="hidden lg:flex lg:items-center lg:w-auto w-full" id="menu">
-        <nav>
-            <ul class="text-xl text-center items-center gap-x-5 pt-4 md:gap-x-4 lg:text-lg lg:flex  lg:pt-0">
-                <li class="py-2 lg:py-0 ">
-                    <a
-                            class="text-black hover:pb-4 hover:border-b-4 hover:border-blue-600"
-                            href="books"
-                    >
-                        Gallery
-                    </a>
-                </li>
-                <li class="py-2 lg:py-0 " >
-                    <a
-                            class="text-black hover:pb-4 hover:border-b-4 hover:border-blue-600"
-                            href="available_books"
-                    >
-                        Available books
-                    </a>
-                </li>
-                <li class="py-2 lg:py-0 " >
-                    <a
-                            class="text-black hover:pb-4 hover:border-b-4 hover:border-blue-600"
-                            href="all_borrowed_books"
-                    >
-                        Borrowals
-                    </a>
-                </li>
+<div th:replace="fragments/navbar :: navbar"></div>
 
-                <li class="py-2 lg:py-0 " >
-                    <a
-                            class="text-black hover:pb-4 hover:border-b-4 hover:border-blue-600"
-                            href="register"
-                    >
-                        New Member
-                    </a>
-                </li>
-
-                <li class="py-2 lg:py-0 " >
-                    <a
-                            class="text-black hover:pb-4 hover:border-b-4 hover:border-blue-600"
-                            href="book_register"
-                    >
-                        New Book
-                    </a>
-                </li>
-                <li class="py-2 lg:py-0 ">
-                    <a
-                            class="text-black hover:pb-4 hover:border-b-4 hover:border-blue-600"
-                            href="users"
-                    >
-                        Members
-                    </a>
-                </li>
-
-                <li class="py-2 lg:py-0 ">
-                    <a
-                            class="text-black hover:pb-4 hover:border-b-4 hover:border-blue-600"
-                            href="profile"
-                    >
-                        My Profile
-                    </a>
-                </li>
-
-
-            </ul>
-        </nav>
-    </div>
-</nav>
-    </div>
-</nav>
-
-<div class="container mt-20">
-    <form th:action="@{/available_books}"  class="mb-4">
-       <input type="text" name="keyword" id="keyword" size="50" th:value="${keyword}"  class="border-dark border rounded pt-2 pb-2 pl-2 pr-2" required />
-        &nbsp;
-        &nbsp;<button  type="submit">
-        <span  class="material-symbols-outlined">search</span>
-         </button>
-
-        <input type="button" value="Clear" id="btnClear" onclick="clearSe`arch()" class="bg-[#6a76ac] pr-4 pl-4 text-white"/>
+<div class="container mt-2">
+    <!--  Search form-->
+    <form th:action="@{/books}" class="search-bar flex flex-row justify-content-end align-content-end">
+        <input type="text" name="keyword" id="keyword" size="50" th:value="${keyword}" class="absolute border-dark border rounded-pill w-80 pt-2 pb-2 pl-2 pr-2" required>
+        <button  type="submit" class="relative">
+            <img  src="/images/search.svg" class="h-auto w-9 px-2 py-2">
+        </button>
+        </input>
     </form>
-    <table class="table table-striped  table-hover">
+
+
+    <table class="table m-10 p-10">
         <thead>
         <tr>
             <th scope="col">Id</th>
@@ -137,48 +59,43 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="b:${book} ">
-
+        <tr th:each="b : ${listBooks}">
             <td th:text="${b.id}"></td>
             <td th:text="${b.name}"></td>
             <td th:text="${b.author}"></td>
             <td th:text="${b.price}"></td>
             <td th:text="${b.count}"></td>
-            <td th:text="${b.category.category_name}"></td>
-            <td >
-
-            <img  th:src="@{'/' + ${b.imageURL}}" class="card-img-top" alt="book cover" style="height: 16rem">
-            </td>
-
+            <td th:text="${b.category?.category_name}"></td>
             <td>
+                <img
+                        th:src="${b.imageUrl}"
+                        class="card-img-top h-20 w-20 object-cover"
+                        alt="book cover"
 
-                <div class="flex flex-row ">
-                    <a th:href="@{/deleteBook/{id} (id=${b.id} ) }">
-                        <svg height="24px" width="24px" fill="#000000" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M5.755,20.283,4,8H20L18.245,20.283A2,2,0,0,1,16.265,22H7.735A2,2,0,0,1,5.755,20.283ZM21,4H16V3a1,1,0,0,0-1-1H9A1,1,0,0,0,8,3V4H3A1,1,0,0,0,3,6H21a1,1,0,0,0,0-2Z"></path></g></svg>
-
+                >
+            </td>
+            <td>
+                <div class="flex flex-row gap-1">
+                    <a th:href="@{/deleteBook/{id}(id=${b.id})}" class="text-red-600">
+                        <svg height="20px" width="20px" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5.755,20.283,4,8H20L18.245,20.283A2,2,0,0,1,16.265,22H7.735A2,2,0,0,1,5.755,20.283ZM21,4H16V3a1,1,0,0,0-1-1H9A1,1,0,0,0,8,3V4H3A1,1,0,0,0,3,6H21a1,1,0,0,0,0-2Z"></path>
+                        </svg>
                     </a>
-                    <a th:href="@{/editBook/{id} (id=${b.id} ) }">
-                        <svg height="24px" width="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M20.8477 1.87868C19.6761 0.707109 17.7766 0.707105 16.605 1.87868L2.44744 16.0363C2.02864 16.4551 1.74317 16.9885 1.62702 17.5692L1.03995 20.5046C0.760062 21.904 1.9939 23.1379 3.39334 22.858L6.32868 22.2709C6.90945 22.1548 7.44285 21.8693 7.86165 21.4505L22.0192 7.29289C23.1908 6.12132 23.1908 4.22183 22.0192 3.05025L20.8477 1.87868ZM18.0192 3.29289C18.4098 2.90237 19.0429 2.90237 19.4335 3.29289L20.605 4.46447C20.9956 4.85499 20.9956 5.48815 20.605 5.87868L17.9334 8.55027L15.3477 5.96448L18.0192 3.29289ZM13.9334 7.3787L3.86165 17.4505C3.72205 17.5901 3.6269 17.7679 3.58818 17.9615L3.00111 20.8968L5.93645 20.3097C6.13004 20.271 6.30784 20.1759 6.44744 20.0363L16.5192 9.96448L13.9334 7.3787Z" fill="#0F0F0F"></path> </g></svg>
+                    <a th:href="@{/editBook/{id}(id=${b.id})}" class="text-blue-600">
+                        <svg height="20px" width="20px" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M20.8477 1.87868C19.6761 0.707109 17.7766 0.707105 16.605 1.87868L2.44744 16.0363C2.02864 16.4551 1.74317 16.9885 1.62702 17.5692L1.03995 20.5046C0.760062 21.904 1.9939 23.1379 3.39334 22.858L6.32868 22.2709C6.90945 22.1548 7.44285 21.8693 7.86165 21.4505L22.0192 7.29289C23.1908 6.12132 23.1908 4.22183 22.0192 3.05025L20.8477 1.87868ZM18.0192 3.29289C18.4098 2.90237 19.0429 2.90237 19.4335 3.29289L20.605 4.46447C20.9956 4.85499 20.9956 5.48815 20.605 5.87868L17.9334 8.55027L15.3477 5.96448L18.0192 3.29289ZM13.9334 7.3787L3.86165 17.4505C3.72205 17.5901 3.6269 17.7679 3.58818 17.9615L3.00111 20.8968L5.93645 20.3097C6.13004 20.271 6.30784 20.1759 6.44744 20.0363L16.5192 9.96448L13.9334 7.3787Z"></path>
+                        </svg>
                     </a>
                 </div>
-
-
             </td>
         </tr>
         </tbody>
     </table>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
-<script
-        src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js"
-        defer
-></script>
-<script type="text/javascript">
+<script>
     function clearSearch() {
-        window.location = "[[@{/available_books}]]";
+        window.location = '/available_books';
     }
 </script>
 </body>

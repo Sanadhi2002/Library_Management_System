@@ -17,11 +17,7 @@ public class BookService {
         bRepo.save(b);
 
     }
-
-    public List<Book> getAllBook(){
-
-        return bRepo.findAll();
-    }
+    public List<Book> getAllBook(){return bRepo.findAll();}
 
     public Book getBookById(int id){
         return bRepo.findById(id).get();

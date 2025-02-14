@@ -17,23 +17,24 @@ public class CategoryService {
     private CategoryRepository cRepo;
 
     public List<Category> getAllCategories(){
-
         return cRepo.findAll();
+    }
+    public Category getCategoryById(int id) {
+        return cRepo.findById(id);
     }
 
     public void save(Category c){
         cRepo.save(c);
-
     }
 
-    public Category getCategoryById(int id){
-        return cRepo.findById(id).get();
-    }
 
-    public  void deleteById(int id){
+    public void deleteById(int id){
         cRepo.deleteById(id);
     }
 
+    public List<Category> searchCategories(String keyword){
+        return cRepo.findByKeyword(keyword);
+    }
 
 
 

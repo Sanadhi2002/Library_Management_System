@@ -19,7 +19,7 @@
 
 <div class="container mt-20">
 
-    <form enctype="multipart/form-data" class="col-md-4 offset-md-4" th:action="@{/save}" method="post" th:object="${book}">
+    <form enctype="multipart/form-data" class="col-md-4 offset-md-4" th:action="@{/updateBook}" method="post" th:object="${book}">
 
         <input type="hidden" name="id" th:value="${book.id}"/>
         <div class="mb-3">
@@ -42,16 +42,18 @@
         </div>
         <div class="mb-3">
             <label for="image" class="form-label">Book Image</label>
-            <input type="file" class="form-control" id="image" name="image" th:value="${book.imageURL}" required>
-        </div>
-        <div class="mb-3">
-            <label for="category" class="form-label">Category</label>
-            <select class="form-control" id="category" name="category_id">
-                <option value="" >Select Category</option>
-                <option th:each="category : ${listCategories}" th:value="${category.id}" th:text="${category.category_name}"></option>
-            </select>
+            <input type="file" class="form-control" id="image" name="image"  accept="image/*" required>
         </div>
 
+
+        <select class="form-control" id="category" name="category.id">
+            <option value="">Select Category</option>
+            <option th:each="category : ${listCategories}"
+                    th:value="${category.id}"
+                    th:text="${category.category_name}"
+                    th:selected="${category.id == book.category.id}">
+            </option>
+        </select>
 
 
         <button type="submit" class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Submit</button>
