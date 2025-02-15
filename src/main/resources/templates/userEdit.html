@@ -3,15 +3,15 @@
 <head>
   <meta charset="ISO-8859-1">
   <title>Sign Up - CodeJava</title>
-  <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css" />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300..700;1,300..700&display=swap" rel="stylesheet">
-  <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
+  <script src="/webjars/jquery/jquery.min.js" type="text/javascript"></script>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+  <script src="/webjars/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
   <title>Libra</title>
   <style>
     *{
@@ -108,47 +108,36 @@
 <div th:replace="fragments/navbar :: navbar"></div>
 <div class="flex-container">
   <div class="HeaderImage">
-    <img src="/images/register.png" alt="image" />
+    <img alt="image" src="/images/register.png" />
   </div>
   <div class="container">
-  <form  th:action="@{/saveUser}" method="post" th:object="${user}">
+  <form  method="post" th:action="@{/updateUser}" th:object="${user}">
     <div class="m-3">
+      <input type="hidden" th:field="*{id}" />
+
       <div class="form-group ">
 
-          <input type="email" th:field="*{email}" class="form-control" placeholder="Email" required />
+          <input class="form-control" maxlength="20" minlength="2" placeholder="First Name"
+                 required th:field="*{first_name}" type="text"/>
 
       </div>
 
       <div class="form-group ">
 
-          <input type="password" th:field="*{password}" placeholder="Password" class="form-control"
-                 required minlength="6" maxlength="10"/>
-
-      </div>
-
-      <div class="form-group ">
-
-          <input type="text" placeholder="First Name" th:field="*{first_name}" class="form-control"
-                 required minlength="2" maxlength="20"/>
-
-      </div>
-
-      <div class="form-group ">
-
-        <input type="text"  th:field="*{last_name}" class="form-control"
-                 required minlength="2" maxlength="20" />
+        <input class="form-control"  maxlength="20" minlength="2"
+               required th:field="*{last_name}" type="text" />
 
       </div>
       <div class="form-group ">
 
-          <input type="text" th:field="*{phone}" class="form-control"
-                 required minlength="2" maxlength="10"  pattern="[0-9]{2,10}"/>
+          <input class="form-control" maxlength="10" minlength="2"
+                 pattern="[0-9]{2,10}" required th:field="*{phone}"  type="text"/>
 
       </div>
       <div class="form-group">
 
 
-          <select th:field="*{role.id}" class="form-control" required>
+          <select class="form-control" required th:field="*{role.id}">
             <option value="1">Admin</option>
             <option value="2">Membership</option>
           </select>
@@ -156,15 +145,15 @@
       </div>
 
       <div class="btn-container" >
-        <button type="submit" class="edit-btn">Sign Up</button>
+        <button class="edit-btn" type="submit">Save</button>
       </div>
     </div>
   </form>
   </div>
 </div>
 <script
-        src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js"
         defer
+        src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js"
 ></script>
 </body>
 </html>

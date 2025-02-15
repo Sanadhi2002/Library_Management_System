@@ -1,10 +1,12 @@
 package com.library.Library.controller;
 
 import com.library.Library.entity.Category;
+import com.library.Library.entity.User;
 import com.library.Library.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,6 +33,23 @@ public class CategoryController {
         return "redirect:/categories";
 
     }
+
+
+    @PostMapping("/updateCategory" )
+    public  String updateCategory(@ModelAttribute("category") Category category){
+
+      Category existingCategory=categoryService.getCategoryById(category.getId());
+
+        if (existingCategory == null) {
+            return "redirect:/categories";
+        }
+        // Update other fields
+        existingCategory.setCategory_name(category.getCategory_name());
+
+        categoryService.save(existingCategory);
+
+        return "redirect:/categories";
+    }
     @RequestMapping("/editCategory/{id}")
     public String editCategory(@PathVariable("id") int id, Model model){
         Category category=categoryService.getCategoryById(id);
@@ -42,4 +61,6 @@ public class CategoryController {
         categoryService.deleteById(id);
         return "redirect:/categories";
     }
+
+
 }

@@ -20,6 +20,15 @@
             font-weight: 700;
             font-style: normal;
         }
+        .category{
+            display: flex;
+            flex-direction: column;
+            justify-content: end;
+            align-content: end;
+            margin-left: 10px;
+            width: 50%;
+        }
+
         #menu-toggle:checked + #menu {
             display: block;
         }
@@ -36,16 +45,31 @@
 
 <div class="container mt-2">
     <!--  Search form-->
-    <form th:action="@{/books}" class="search-bar flex flex-row justify-content-end align-content-end">
+    <form th:action="@{/available_books}" class="search-bar flex flex-row justify-content-end align-content-end">
         <input type="text" name="keyword" id="keyword" size="50" th:value="${keyword}" class="absolute border-dark border rounded-pill w-80 pt-2 pb-2 pl-2 pr-2" required>
         <button  type="submit" class="relative">
             <img  src="/images/search.svg" class="h-auto w-9 px-2 py-2">
         </button>
         </input>
     </form>
+    <div class="category ">
+        <label class="form-label" for="category">Category</label>
+        <select class="form-control" id="category" name="category.id" onchange="filterByCategory(this.value)">
+            <option value="">-- Select Category --</option>
+            <option th:each="category : ${categories}"
+                    th:selected="${selectedCategory != null && selectedCategory == category.id}"
+                    th:text="${category.category_name}"
+                    th:value="${category.id}">
+            </option>
+        </select>
+    </div>
 
 
-    <table class="table m-10 p-10">
+    <!--  message for no books -->
+    <div class="alert alert-info text-center w-100" th:if="${noBooks}">
+        <p th:text="'Sorry, no books available under the category: ' + ${categoryName}"></p>
+    </div>
+    <table class="table m-10 p-10" th:unless="${noBooks}">
         <thead>
         <tr>
             <th scope="col">Id</th>
@@ -91,6 +115,15 @@
         </tr>
         </tbody>
     </table>
+    <script type="text/javascript">
+        function filterByCategory(categoryId) {
+            if (categoryId) {
+                window.location.href = '/available_books/category/' + categoryId;
+            } else {
+                window.location.href = '/available_books';
+            }
+        }
+    </script>
 </div>
 
 <script>

@@ -121,7 +121,7 @@
       <div class="alert alert-info text-center w-100" th:if="${noBooks}">
         <p th:text="'Sorry, no books available under the category: ' + ${categoryName}"></p>
       </div>
-      <!-- Books display -->
+
       <!-- Books display -->
       <div th:each="b : ${listBooks}" th:unless="${noBooks}" class="card">
         <img class="book-image" alt="book cover" th:src="${b.imageUrl}">

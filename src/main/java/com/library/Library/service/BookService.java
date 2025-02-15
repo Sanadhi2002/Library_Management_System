@@ -18,6 +18,10 @@ public class BookService {
         bRepo.save(b);
 
     }
+    public  void update(Book b){
+        bRepo.save(b);
+    }
+
     public List<Book> getAllBook(){return bRepo.findAll();}
 
     public Book getBookById(int id){
@@ -29,7 +33,10 @@ public class BookService {
     }
 
     public List<Book> searchBooks(String keyword){
-        return bRepo.findByNameContainingOrAuthorContaining(keyword, keyword);
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return bRepo.findAll();
+        }
+        return bRepo.findByNameContainingIgnoreCaseOrAuthorContainingIgnoreCase(keyword, keyword);
     }
 
     public List<Book> listAll(String keyword) {

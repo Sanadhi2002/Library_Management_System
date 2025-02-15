@@ -1,8 +1,6 @@
 package com.library.Library.controller;
 
-import com.library.Library.entity.Member;
-import com.library.Library.entity.Role;
-import com.library.Library.entity.User;
+import com.library.Library.entity.*;
 import com.library.Library.repository.UserRepository;
 import com.library.Library.service.*;
 import jakarta.persistence.EntityManager;
@@ -87,37 +85,42 @@ public class UserController {
     public String login(){
         return "login";
     }
+
+
     @RequestMapping("/users")
-    public String listUsers(Model model,@Param("keyword") String keyword){
-        List<User> listUsers =userDetailsService.listAll(keyword);
+    public String listUsers(Model model,@RequestParam(value = "keyword", required = false) String keyword){
+        List<User> listUsers =(keyword != null && !keyword.isEmpty()) ? userDetailsService.searchUser(keyword) : userDetailsService.getAllUsers();
         model.addAttribute("listUsers", listUsers);
         model.addAttribute("keyword", keyword);
         return "users";
     }
 
 
+    @PostMapping("/updateUser")
+    public String updateUser(@ModelAttribute("user") User user) {
+        User existingUser = userDetailsService.getUserById(user.getId());
+
+        if (existingUser == null) {
+            return "redirect:/users";
+        }
 
 
-    @RequestMapping("/editMember/{id}")
-    public String editMember(@PathVariable("id") int id, Model model){
-        Member m=memberService.getMemberById(id);
+        if (user.getPassword() != null && !user.getPassword().isEmpty()) {
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            String encodedPassword = passwordEncoder.encode(user.getPassword());
+            existingUser.setPassword(encodedPassword);
+        }
 
-        model.addAttribute("member",m);
-        return "memberEdit";
-    }
-
-
-    @GetMapping("/members")
-    public ModelAndView getAllMembers(){
-        List<Member> memberList=memberService.getAllMembers();
-        return  new ModelAndView("memberList","member",memberList);
-    }
+        // Update other fields
+        existingUser.setFirst_name(user.getFirst_name());
+        existingUser.setLast_name(user.getLast_name());
+        existingUser.setPhone(user.getPhone());
+        existingUser.setRole(user.getRole());
 
 
-    @PostMapping("/saveMember")
-    public  String addMember(@ModelAttribute Member member){
-        memberService.saveMember(member);
-        return  "redirect:/new_member";
+        userRepository.save(existingUser);
+
+        return "redirect:/users";
     }
 
     @RequestMapping("/editUser/{id}")
@@ -129,11 +132,6 @@ public class UserController {
         return "userEdit";
     }
 
-    @RequestMapping("/deleteMember/{id}")
-    public String deleteMember(@PathVariable("id")int id){
-        memberService.deleteById(id);
-        return "redirect:/new_member";
-    }
 
     @RequestMapping("/deleteUser/{id}")
     public String deleteUser(@PathVariable("id")int id){

@@ -92,4 +92,13 @@ public class CustomUserDetailsService implements UserDetailsService {
         }
         return userRepo.findAll();
     }
+
+    public List<User> searchUser(String keyword) {
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return userRepo.findAll();
+        }
+        return userRepo.findByKeyword(keyword);
+    }
+
+
 }

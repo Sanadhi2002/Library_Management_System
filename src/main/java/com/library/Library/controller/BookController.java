@@ -68,11 +68,11 @@ public class BookController {
 
 
     @GetMapping("/books")
-    public String listBooks(Model model, @Param("keyword") String keyword) {
-        List<Book> listBooks = service.getAllBook();
+    public String listBooks(Model model, @RequestParam(value = "keyword", required = false)String keyword) {
+        List<Book> listBooks = (keyword != null && !keyword.isEmpty()) ? service.searchBooks(keyword) : service.getAllBook();
         List<Category> categories = categoryService.getAllCategories();
 
-        // Add an empty book object for the form
+
         Book book = new Book();
         model.addAttribute("book", book);
         model.addAttribute("listBooks", listBooks);
@@ -85,17 +85,49 @@ public class BookController {
 
 
     @GetMapping("/available_books")
-    public String listAvailableBooks(Model model, @Param("keyword") String keyword) {
+    public String listAvailableBooks(Model model,@RequestParam(value = "keyword", required = false)String keyword) {
+        List<Book> listBooks = (keyword != null && !keyword.isEmpty()) ? service.searchBooks(keyword) : service.getAllBook();
+        List<Category> categories = categoryService.getAllCategories();
+
+        Book book = new Book();
+        model.addAttribute("book", book);
+        model.addAttribute("listBooks", listBooks);
+        model.addAttribute("categories", categories);
+        model.addAttribute("keyword", keyword);
+
+        return "bookList";
+    }
+
+
+    @GetMapping("/available_books/category/{categoryId}")
+    public String listBooksByCategoryinBookList(@PathVariable("categoryId") Integer categoryId, Model model) {
         List<Book> listBooks;
-        if (keyword != null && !keyword.isEmpty()) {
-            listBooks = service.listAll(keyword);
+        List<Category> categories = categoryService.getAllCategories();
+
+        if (categoryId != null) {
+            Category category = categoryService.getCategoryById(categoryId);
+            if (category != null) {
+                listBooks = service.getBooksByCategory(category);
+                if (listBooks.isEmpty()) {
+                    model.addAttribute("noBooks", true);
+                    model.addAttribute("categoryName", category.getCategory_name());
+                }
+            } else {
+                listBooks = service.getAllBook();
+            }
         } else {
             listBooks = service.getAllBook();
         }
+
+        Book book = new Book();
+        model.addAttribute("book", book);
         model.addAttribute("listBooks", listBooks);
-        model.addAttribute("keyword", keyword);
+        model.addAttribute("categories", categories);
+        model.addAttribute("selectedCategory", categoryId);
+
         return "bookList";
     }
+
 
     @GetMapping("/books/category/{categoryId}")
     public String listBooksByCategory(@PathVariable("categoryId") Integer categoryId, Model model) {
@@ -140,28 +172,25 @@ public class BookController {
 
     @PostMapping("/book_register")
     public String registerBook(@ModelAttribute Book book, @RequestParam("image") MultipartFile imageFile) throws IOException {
-        // Handle the image file upload
+
         if (!imageFile.isEmpty()) {
-            // Create uploads directory if it doesn't exist
             Path uploadPath = Path.of(uploadDir);
             if (!Files.exists(uploadPath)) {
                 Files.createDirectories(uploadPath);
             }
 
-            // Generate unique filename to prevent overwrites
             String originalFilename = imageFile.getOriginalFilename();
             String fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
             String uniqueFilename = UUID.randomUUID().toString() + fileExtension;
 
-            // Save the file
             Path filePath = uploadPath.resolve(uniqueFilename);
             Files.copy(imageFile.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
 
-// Save the relative path in the database
+
             book.setImageUrl("/uploads/" + uniqueFilename);
         }
 
-        // Ensure category is properly set
+
         if (book.getCategory() != null && book.getCategory().getId() > 0) {
             Category category = categoryService.getCategoryById(book.getCategory().getId());
             if (category != null) {
@@ -169,11 +198,9 @@ public class BookController {
             }
         }
 
-        // Save the book
         service.save(book);
         return "redirect:/books";
     }
-
 
 
     @RequestMapping("/editBook/{id}")
@@ -188,37 +215,49 @@ public class BookController {
 
     @PostMapping("/updateBook")
     public String updateBook(@ModelAttribute Book book, @RequestParam("image") MultipartFile imageFile) throws IOException {
-        // Handle the image file upload
+       Book existingBook= service.getBookById(book.getId());
+
+
+        if (existingBook == null) {
+            return "redirect:/available_books";
+        }
+
+
         if (!imageFile.isEmpty()) {
-            // Create uploads directory if it doesn't exist
+
             Path uploadPath = Path.of(uploadDir);
             if (!Files.exists(uploadPath)) {
                 Files.createDirectories(uploadPath);
             }
 
-            // Generate unique filename to prevent overwrites
+
             String originalFilename = imageFile.getOriginalFilename();
             String fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
             String uniqueFilename = UUID.randomUUID().toString() + fileExtension;
 
-            // Save the file
+
             Path filePath = uploadPath.resolve(uniqueFilename);
             Files.copy(imageFile.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
 
-            // Save the relative path in the database
+
             book.setImageUrl("/uploads/" + uniqueFilename);
         }
 
-        // Ensure category is properly set
+
         if (book.getCategory() != null && book.getCategory().getId() > 0) {
             Category category = categoryService.getCategoryById(book.getCategory().getId());
             if (category != null) {
                 book.setCategory(category);
             }
         }
+        existingBook.setName(book.getName());
+        existingBook.setAuthor(book.getAuthor());
+        existingBook.setCount(book.getCount());
+        existingBook.setImageUrl(book.getImageUrl());
+
 
         // Save the book
-        service.save(book);
+        service.update(existingBook);
         return "redirect:/books";
     }
 

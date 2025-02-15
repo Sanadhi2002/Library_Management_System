@@ -51,7 +51,7 @@
 
 <div class="container">
 
-    <form enctype="multipart/form-data" class="col-md-4 offset-md-4" th:action="@{/saveCategory}" method="post" th:object="${category}">
+    <form enctype="multipart/form-data" class="col-md-4 offset-md-4" th:action="@{/updateCategory}" method="post" th:object="${category}">
 
         <input type="hidden" name="id" th:value="${category.id}"/>
         <div class="mb-3">
