@@ -37,7 +37,6 @@ public class BookController {
     @Autowired
     private MemberService memberService;
 
-
     @Autowired
     private UserRepository userRepository;
 
@@ -270,29 +269,47 @@ public class BookController {
 
 
     @PostMapping("/borrowBook/{id}")
-    public String borrowBook(@PathVariable("id") int id){
+    public String borrowBook(@PathVariable("id") int id) {
         Book b = service.getBookById(id);
+
         if (b.getCount() > 0) {
+
             b.setCount(b.getCount() - 1);
             service.save(b);
+
             User currentUser = userDetailsService.getCurrentUserEntity();
-            BorrowedBook borrowedBook = new BorrowedBook(currentUser, b, false, null, null, null, 0, false);
+
+
+            BorrowedBook borrowedBook = new BorrowedBook(
+                    id,                 // ID (auto-generated),
+                    currentUser,        // User borrowing the book
+                    b,                  // Book being borrowed
+                    LocalDate.now(),    // Borrow date (current date)
+                    LocalDate.now().plusDays(7),  // Return date (7 days from borrow date)
+                    LocalDate.now().plusDays(7),  // Due date (7 days from borrow date)
+                    0,                  // Fine (initially 0)
+                    false,              // Fine is not paid initially
+                    false               // Book is not returned initially
+            );
+
             borrowedBookService.save(borrowedBook);
 
-        }else{
-            System.out.println("boorrow failed");
+            return "redirect:/books";
+        } else {
+            System.out.println("Borrow failed: Book is currently unavailable.");
+            return "redirect:/books?error=BookUnvailable";  // Optionally, pass an error flag or message to the view
         }
-        return "redirect:/books";
     }
-
 
 
 
     @GetMapping("/borrowed_books")
     public ModelAndView BorrowedBooksByUser(Model model){
-
         User currentUser=userDetailsService.getCurrentUserEntity();
         List<BorrowedBook> borrowedBooks = borrowedBookService.findByUserAndIsReturnedFalse(currentUser);
+        if (borrowedBooks.isEmpty()) {
+            model.addAttribute("noBooks", true);
+        }
 
         model.addAttribute("borrowedBooks", borrowedBooks);
         return new ModelAndView("BooksBorrowed","borrowedBooks",borrowedBooks);
@@ -315,7 +332,11 @@ public class BookController {
         if(borrowedBook!=null){
             Book book=borrowedBook.getBook();
             book.setCount(book.getCount()+1);
+
             service.save(book);
+            if (borrowedBook.getDueDate().isAfter(borrowedBook.getDueDate())) {
+                borrowedBook.setFine(100*(LocalDate.now().toEpochDay()-borrowedBook.getDueDate().toEpochDay()));
+            }
             borrowedBook.setReturned(true);
             borrowedBook.setReturnDate(LocalDate.now());
             borrowedBookService.save(borrowedBook);

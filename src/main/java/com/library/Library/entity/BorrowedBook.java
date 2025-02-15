@@ -40,25 +40,24 @@ public class BorrowedBook  implements  Charges{
     @Column(nullable = false, columnDefinition = "boolean default false")
     private  boolean isReturned = false;
 
-    public BorrowedBook(User user, Book book, boolean isReturned, LocalDate borrowDate, LocalDate returnDate, LocalDate dueDate, double fine, boolean fineIsPayed) {
+    public BorrowedBook(int id, User user, Book book, LocalDate borrowDate, LocalDate  returnDate, LocalDate dueDate, double fine, boolean fineIsPayed, boolean isReturned) {
+        this.id = id;
         this.user = user;
         this.book = book;
-        this.borrowDate = LocalDate.now();
-        this.isReturned = isReturned;
-        if (returnDate != null) {
-            this.returnDate = returnDate;
-        } else {
-            this.returnDate = LocalDate.now();
-        }
-        this.dueDate = getDueDate();
+        this.borrowDate = borrowDate;
+        this.returnDate = returnDate;
+        this.dueDate = dueDate;
         this.fine = fine;
         this.fineIsPayed = fineIsPayed;
+        this.isReturned = isReturned;
     }
 
 
     public BorrowedBook() {
         super();
     }
+
+
 
     public int getId() {
         return id;

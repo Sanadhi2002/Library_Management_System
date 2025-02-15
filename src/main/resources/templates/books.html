@@ -39,9 +39,6 @@
       margin: 10px;
       padding: 10px;
       gap:3px;
-
-
-
     }
     .flex-container{
       display: flex;
@@ -50,7 +47,6 @@
       gap: 6px;
       margin: 10px;
     }
-
     .borrow-btn{
       background-color: #d9b0b6;
       border-radius: 10px;
@@ -58,7 +54,6 @@
       padding: 10px;
       color: #000;
       width: 100%;
-
     }
     .card{
       display: flex;
@@ -67,8 +62,6 @@
       gap: 6px;
       box-shadow: #c28c90;
     }
-
-
     .book-image{
       padding-left: 20px;
       padding-right: 20px;
@@ -79,9 +72,6 @@
 
 
     }
-
-
-
     .search-bar{
       display: flex;
       flex-direction: row;
@@ -129,9 +119,12 @@
         <div class="card-body">
           <h3 class="card-title font-bold" th:text="${b.name}"></h3>
           <h5 class="card-title">By: <span th:text="${b.author}"></span></h5>
-          <form method="post" th:action="@{/borrowBook/{id}(id=${b.id})}">
+          <form method="post" th:action="@{/borrowBook/{id}(id=${b.id})}" th:if="${b.count > 0}">
             <button class="borrow-btn" type="submit">Borrow</button>
           </form>
+          <div th:if="${b.count == 0}" class="alert alert-warning text-center"  >
+            This book is currently unavailable.
+          </div>
         </div>
       </div>
 
