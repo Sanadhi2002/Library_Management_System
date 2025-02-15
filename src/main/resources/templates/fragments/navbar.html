@@ -1,5 +1,4 @@
 <div th:fragment="navbar">
-
     <nav  class="lg:px-16 px-6 bg-white  flex flex-wrap items-center lg:py-0 py-2">
         <div class="flex-1 flex justify-between items-center">
             <a href="#" class="flex text-lg font-semibold">
@@ -37,7 +36,7 @@
                             Gallery
                         </a>
                     </li>
-                    <li class="py-2 lg:py-0  ">
+                    <li class="py-2 lg:py-0  " sec:authorize="hasAuthority('admin')">
                         <a
                                 class="text-black hover:underline"
                                 href="available_books"
@@ -45,7 +44,7 @@
                             Available books
                         </a>
                     </li>
-                    <li class="py-2 lg:py-0 ">
+                    <li class="py-2 lg:py-0 " sec:authorize="hasAuthority('admin')">
                         <a
                                 class="text-black hover:underline"
                                 href="all_borrowed_books"
@@ -63,7 +62,7 @@
                         </a>
                     </li>
 
-                    <li class="py-2 lg:py-0 ">
+                    <li class="py-2 lg:py-0 " sec:authorize="hasAuthority('admin')">
                         <a
                                 class="text-black hover:underline"
                                 href="bookRegister"
@@ -71,7 +70,7 @@
                             New Book
                         </a>
                     </li>
-                    <li class="py-2 lg:py-0 ">
+                    <li class="py-2 lg:py-0 " sec:authorize="hasAuthority('admin')">
                         <a
                                 class="text-black hover:underline"
                                 href="available_categories"
@@ -79,7 +78,7 @@
                            Literary Genres
                         </a>
                     </li>
-                    <li class="py-2 lg:py-0 " >
+                    <li class="py-2 lg:py-0 " sec:authorize="hasAuthority('admin')" >
                         <a
                                 class="text-black hover:underline"
                                 href="users"

@@ -36,11 +36,11 @@ public class WebSecurityConfig   {
     SecurityFilterChain configure(HttpSecurity http) throws Exception {
         http.authenticationProvider(authenticationProvider());
 
-        http.authorizeHttpRequests(auth ->
-                        auth.requestMatchers("/users").authenticated()
-                                .anyRequest().permitAll()
-
-
+        http.authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/users/**").hasAuthority("admin")
+                        .requestMatchers("/available_books/**").hasAuthority("admin")
+                        .requestMatchers("/books").authenticated()  // All authenticated users
+                        .anyRequest().permitAll() // Other routes are public
                 )
                 .formLogin(login ->
                         login
