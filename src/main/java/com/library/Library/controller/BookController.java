@@ -68,12 +68,21 @@ public class BookController {
 
 
     @GetMapping("/books")
-    public ModelAndView listBooks(Model model, @Param("keyword") String keyword) {
+    public String listBooks(Model model, @Param("keyword") String keyword) {
         List<Book> listBooks = service.getAllBook();
+        List<Category> categories = categoryService.getAllCategories();
+
+        // Add an empty book object for the form
+        Book book = new Book();
+        model.addAttribute("book", book);
         model.addAttribute("listBooks", listBooks);
+        model.addAttribute("categories", categories);
         model.addAttribute("keyword", keyword);
-        return new ModelAndView("books", "listBooks", listBooks);
+
+        return "books";
     }
+
+
 
     @GetMapping("/available_books")
     public String listAvailableBooks(Model model, @Param("keyword") String keyword) {
@@ -87,6 +96,36 @@ public class BookController {
         model.addAttribute("keyword", keyword);
         return "bookList";
     }
+
+    @GetMapping("/books/category/{categoryId}")
+    public String listBooksByCategory(@PathVariable("categoryId") Integer categoryId, Model model) {
+        List<Book> listBooks;
+        List<Category> categories = categoryService.getAllCategories();
+
+        if (categoryId != null) {
+            Category category = categoryService.getCategoryById(categoryId);
+            if (category != null) {
+                listBooks = service.getBooksByCategory(category);
+                if (listBooks.isEmpty()) {
+                    model.addAttribute("noBooks", true);
+                    model.addAttribute("categoryName", category.getCategory_name());
+                }
+            } else {
+                listBooks = service.getAllBook();
+            }
+        } else {
+            listBooks = service.getAllBook();
+        }
+
+        Book book = new Book();
+        model.addAttribute("book", book);
+        model.addAttribute("listBooks", listBooks);
+        model.addAttribute("categories", categories);
+        model.addAttribute("selectedCategory", categoryId);
+
+        return "books";
+    }
+
 
 
 

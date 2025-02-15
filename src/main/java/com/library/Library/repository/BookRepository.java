@@ -2,6 +2,7 @@ package com.library.Library.repository;
 
 
 import com.library.Library.entity.Book;
+import com.library.Library.entity.Category;
 import com.library.Library.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -16,4 +17,8 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
 
     @Query("SELECT b FROM Book b WHERE CONCAT(b.name, b.author) LIKE %?1%")
     List<Book> findByKeyword(String keyword);
+
+    List<Book> findByCategoryId(int categoryId);
+
+    List<Book> findByCategory(Category category);
 }

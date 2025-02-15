@@ -9,120 +9,44 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300..700;1,300..700&display=swap" rel="stylesheet">
     <title>Libra</title>
     <style>
+        *{
+            font-family: "Cormorant", serif;
+            font-optical-sizing: auto;
+            font-weight: 700;
+            font-style: normal;
+        }
         #menu-toggle:checked + #menu {
             display: block;
+        }
+        .container{
+            width: 100%;
+
+
         }
     </style>
 </head>
 <body>
-<nav class="lg:px-16 px-6 bg-white shadow-md flex flex-wrap items-center lg:py-0 py-2">
-    <div class="flex-1 flex justify-between items-center">
-        <a href="#" class="flex text-lg font-semibold">
-            <img
-                    src="/images/logo.jpg"
-                    width="50"
-                    height="50"
-                    class="p-2"
-                    alt="Rz Codes Logo"
-            />
-            <div class="mt-3 text-black">Libra</div>
-        </a>
-    </div>
-    <label for="menu-toggle" class="cursor-pointer lg:hidden block">
-        <svg
-                class="fill-current text-gray-900"
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 20 20"
-        >
-            <title>menu</title>
-            <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"></path>
-        </svg>
-    </label>
-    <input class="hidden" type="checkbox" id="menu-toggle" />
-    <div class="hidden lg:flex lg:items-center lg:w-auto w-full" id="menu">
-        <nav>
-            <ul class="text-xl text-center items-center gap-x-5 pt-4 md:gap-x-4 lg:text-lg lg:flex  lg:pt-0">
-                <li class="py-2 lg:py-0 ">
-                    <a
-                            class="text-black hover:pb-4 hover:border-b-4 hover:border-blue-600"
-                            href="books"
-                    >
-                        Gallery
-                    </a>
-                </li>
-                <li class="py-2 lg:py-0 " >
-                    <a
-                            class="text-black hover:pb-4 hover:border-b-4 hover:border-blue-600"
-                            href="available_books"
-                    >
-                        Available books
-                    </a>
-                </li>
-                <li class="py-2 lg:py-0 ">
-                    <a
-                            class="text-black hover:pb-4 hover:border-b-4 hover:border-blue-600"
-                            href="all_borrowed_books"
-                    >
-                        Borrowals
-                    </a>
-                </li>
-
-                <li class="py-2 lg:py-0 ">
-                    <a
-                            class="text-black hover:pb-4 hover:border-b-4 hover:border-blue-600"
-                            href="register"
-                    >
-                        New Member
-                    </a>
-                </li>
-
-                <li class="py-2 lg:py-0 " >
-                    <a
-                            class="text-black hover:pb-4 hover:border-b-4 hover:border-blue-600"
-                            href="book_register"
-                    >
-                        New Book
-                    </a>
-                </li>
-                <li class="py-2 lg:py-0 ">
-                    <a
-                            class="text-black hover:pb-4 hover:border-b-4 hover:border-blue-600"
-                            href="users"
-                    >
-                        Members
-                    </a>
-                </li>
-
-                <li class="py-2 lg:py-0 ">
-                    <a
-                            class="text-black hover:pb-4 hover:border-b-4 hover:border-blue-600"
-                            href="profile"
-                    >
-                        My Profile
-                    </a>
-                </li>
-
-
-            </ul>
-        </nav>
-    </div>
-</nav>
-<div class="container text-center mt-20">
+<div th:replace="fragments/navbar :: navbar"></div>
+<div class="container mt-20">
     <div>
-        <form th:action="@{/users}" class="flex flex-row mb-5 ">
-            <input type="text" name="keyword" id="keyword" size="50" th:value="${keyword}" class="border-dark border rounded pt-2 pb-2 pl-2 pr-2" required />
-            &nbsp;
-            <button  type="submit">
-                <span  class="material-symbols-outlined">search</span>
+        <!--  Search form-->
+        <form th:action="@{/books}" class="search-bar flex flex-row justify-content-end align-content-end">
+            <input type="text" name="keyword" id="keyword" size="50" th:value="${keyword}" class="absolute border-dark border rounded-pill w-80 pt-2 pb-2 pl-2 pr-2" required>
+            <button  type="submit" class="relative">
+                <img  src="/images/search.svg" class="h-auto w-9 px-2 py-2">
             </button>
-            <input type="button" value="Clear" id="btnClear" onclick="clearSearch()" class="bg-[#6a76ac] pr-4 pl-4 text-white"/>
+            </input>
         </form>
-        <table class="table table-success table-striped">
-            <thead class="thead-dark">
+
+        <table class="table m-10 p-10">
+            <thead >
             <tr>
                 <th>User ID</th>
                 <th>E-mail</th>

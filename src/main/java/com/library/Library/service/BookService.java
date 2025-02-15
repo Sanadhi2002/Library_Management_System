@@ -1,6 +1,7 @@
 package com.library.Library.service;
 
 import com.library.Library.entity.Book;
+import com.library.Library.entity.Category;
 import com.library.Library.entity.Member;
 import com.library.Library.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,5 +37,18 @@ public class BookService {
             return bRepo.findByKeyword(keyword);
         }
         return bRepo.findAll();
+    }
+
+    public List<Book> getBooksByCategory(int categoryId) {
+        return bRepo.findByCategoryId(categoryId);
+    }
+
+    public List<Book> getBooksByCategory(Category category) {
+        return bRepo.findByCategory(category);
+    }
+
+    public List<Book> findByKeyword(String keyword) {
+        return bRepo.findByNameContainingOrAuthorContaining(keyword, keyword);
+
     }
 }

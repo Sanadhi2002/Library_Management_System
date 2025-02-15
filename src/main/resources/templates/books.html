@@ -1,14 +1,14 @@
 <!doctype html>
-<html lang="en" xmlns:th="https://www.thymeleaf.com" xmlns="http://www.w3.org/1999/html">
+<html lang="en" xmlns="http://www.w3.org/1999/html" xmlns:th="https://www.thymeleaf.com">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta content="width=device-width, initial-scale=1" name="viewport">
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300..700;1,300..700&display=swap" rel="stylesheet">
   <title>Libra</title>
   <style>
@@ -33,7 +33,7 @@
     }
     .middle-container{
       display: flex;
-      flex-direction: row;
+      flex-direction: column;
       flex-wrap: wrap;
       margin: 10px;
       padding: 10px;
@@ -42,14 +42,14 @@
 
 
     }
-    .list{
+    .flex-container{
       display: flex;
-      flex-direction: column;
-      column-gap: 10px;
-      border-radius: 2%;
-      box-shadow: #c28c90;
-      margin: 15px;
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 10px;
     }
+
     .borrow-btn{
       background-color: #d9b0b6;
       border-radius: 10px;
@@ -59,15 +59,26 @@
       width: 100%;
 
     }
+    .card{
+      display: flex;
+      flex-direction: column;
+      flex-wrap: wrap;
+      gap: 6px;
+      box-shadow: #c28c90;
+    }
 
-    .card img{
+
+    .book-image{
       padding-left: 20px;
       padding-right: 20px;
      padding-top:10px;
+      width: 200px;
+      height: 200px;
+      object-fit: cover;
 
-      border-radius: inherit;
 
     }
+
 
 
     .search-bar{
@@ -80,51 +91,81 @@
   </style>
 </head>
 <body>
-<div th:replace="fragments/navbar :: navbar"></div>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
 <div class="container mt-20">
 
 <!--  Search form-->
-  <form th:action="@{/books}" class="search-bar">
-    <input type="text" name="keyword" id="keyword" size="50" th:value="${keyword}" class="absolute border-dark border rounded-pill w-100 pt-2 pb-2 pl-2 pr-2" required>
-    <button  type="submit" class="relative">
-      <img  src="/images/search.svg" class="h-auto w-9 px-2 py-2">
+  <form class="search-bar" th:action="@{/books}">
+    <input class="absolute border-dark border rounded-pill  pt-2 pb-2 pl-2 pr-2" id="keyword" name="keyword" required size="50" th:value="${keyword}" type="text">
+    <button  class="relative" type="submit">
+      <img  class="h-auto w-9 px-2 py-2" src="/images/search.svg">
     </button>
     </input>
   </form>
 
   <div class="middle-container">
-    <div th:each="b : ${listBooks}" class="list">
-      <div class="card" style="width: 18rem; "  >
+      <div class="category ">
+        <label class="form-label" for="category">Category</label>
+        <select class="form-control" id="category" name="category.id" onchange="filterByCategory(this.value)">
+          <option value="">-- Select Category --</option>
+          <option th:each="category : ${categories}"
+                  th:selected="${selectedCategory != null && selectedCategory == category.id}"
+                  th:text="${category.category_name}"
+                  th:value="${category.id}">
+          </option>
+        </select>
+      </div>
 
-        <div class="rounded-8 m-0">
-          <img  th:src="${b.imageUrl}"  alt="book cover" style="height: 16rem">
-
-        </div>
+    <div class="flex-container">
+      <!--  message for no books -->
+      <div class="alert alert-info text-center w-100" th:if="${noBooks}">
+        <p th:text="'Sorry, no books available under the category: ' + ${categoryName}"></p>
+      </div>
+      <!-- Books display -->
+      <!-- Books display -->
+      <div th:each="b : ${listBooks}" th:unless="${noBooks}" class="card">
+        <img class="book-image" alt="book cover" th:src="${b.imageUrl}">
         <div class="card-body">
           <h3 class="card-title font-bold" th:text="${b.name}"></h3>
-          <p >By:
-          <h5 class="card-title" th:text="${b.author}"></h5>
-          </p>
-          <form class="button-container" method="post" th:action="@{/borrowBook/{id}(id=${b.id})}">
-            <button type="submit" class=" borrow-btn">Borrow</button>
+          <h5 class="card-title">By: <span th:text="${b.author}"></span></h5>
+          <form method="post" th:action="@{/borrowBook/{id}(id=${b.id})}">
+            <button class="borrow-btn" type="submit">Borrow</button>
           </form>
         </div>
       </div>
+
+
+      <script type="text/javascript">
+        function filterByCategory(categoryId) {
+          if (categoryId) {
+            window.location.href = '/books/category/' + categoryId;
+          } else {
+            window.location.href = '/books';
+          }
+        }
+      </script>
     </div>
+
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+<script crossorigin="anonymous" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
 <script
-        src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js"
         defer
+        src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js"
 ></script>
 <script type="text/javascript">
-  function clearSearch() {
-    window.location = "[[@{/books}]]";
+
+  function filterByCategory(categoryId) {
+    if (categoryId) {
+      window.location.href = '/books/category/' + categoryId;
+    } else {
+      window.location.href = '/books';
+    }
   }
 </script>
+
 </body>
 </html>
